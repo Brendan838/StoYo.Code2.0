@@ -6,11 +6,9 @@ import {
   Switch,
 } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Bio from "./components/Bio/Bio";
-import Portfolio from "./components/Portfolio/Portfolio";
+import Home from "./components/Home/Home";
+import SignUp from "./components/SignUp/SignUp";
 import Footer from "./components/Footer/Footer";
-import Contact from "./components/Contact/Contact";
-import Resume from "./components/Resume/Resume";
 import "./App.css";
 import S3 from 'react-aws-s3';
 
@@ -24,11 +22,10 @@ const App = () => {
         <Header />
         <Switch>
 
-          <Redirect exact from="/" to="/Bio" />
-          <Route exact path="/Bio" component={Bio} />
-          <Route exact path="/Portfolio" component={Portfolio} />
-          <Route exact path="/Contact" component={Contact} />
-          <Route exact path="/Resume" component={Resume} />
+          <Redirect exact from="/" to="/Home" />
+          <Route exact path="/Home" component={Home} />
+          <Route exact path="/SignUp" component={SignUp} />
+
 
 
         </Switch>
