@@ -19,6 +19,12 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
+  folder:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Folder'
+    },
+  ],
   snippet: [
     {
       type: Schema.Types.ObjectId,
