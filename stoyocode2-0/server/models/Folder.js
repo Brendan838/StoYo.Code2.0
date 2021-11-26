@@ -13,3 +13,7 @@ const folderSchema = new Schema({
         trim: true
     }
 })
+
+const Folder = model('Folder', folderSchema);
+
+module.exports = Folder;
