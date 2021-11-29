@@ -1,51 +1,70 @@
 import React from "react";
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
-  Redirect,
+  // Redirect,
   Switch,
 } from "react-router-dom";
-import Header from "./components/Header/Header";
-import Home from "./components/Home/Home";
-import SignUp from "./components/SignUp/SignUp";
-import Footer from "./components/Footer/Footer";
-import "./App.css";
-import S3 from 'react-aws-s3';
 
+
+import "./App.css";
+//import S3 from 'react-aws-s3';
+import {Box} from "@mui/material/";
+
+
+
+import Home from './pages/Home'
+import NavBar from './components/NavBar'
+import SignIn from './pages/SignIn'
 const App = () => {
+
+
+
 
   return (
 
-    <Router>
+ <Router>
+    <Box 
+      sx={{
 
-      <div className="App">
-        <Header />
-        <Switch>
+        display: 'grid',
+        gridTemplateColumns: 'repeat(12, 1fr)',
+        columnGap: 1,
+        rowGap: 1,
+        gridTemplateRows: 'repeat(24, 1fr)',
+        height: '100vh',
+      }}
+    >
+    <NavBar/>
 
-          <Redirect exact from="/" to="/Home" />
-          <Route exact path="/Home" component={Home} />
-          <Route exact path="/SignUp" component={SignUp} />
+    <Route exact path="/login">
+    <SignIn/>
+    </Route>
+
+    <Route exact path="/home">
+    <Home/>
+    </Route>
+
+    </Box>
+</Router>
 
 
-
-        </Switch>
-        <Footer />
-
-      </div>
-
-    </Router>
   );
+
+
+
 };
+
 export default App;
 
-const config = {
-  bucketName: 'myBucket',
-  dirName: 'media', /* optional */
-  region: 'eu-west-1',
-  accessKeyId: 'JAJHAFJFHJDFJSDHFSDHFJKDSF',
-  secretAccessKey: 'jhsdf99845fd98qwed42ebdyeqwd-3r98f373f=qwrq3rfr3rf',
-  s3Url: 'https:/your-custom-s3-url.com/',
-}
+// const config = {
+//   bucketName: 'myBucket',
+//   dirName: 'media', /* optional */
+//   region: 'eu-west-1',
+//   accessKeyId: 'JAJHAFJFHJDFJSDHFSDHFJKDSF',
+//   secretAccessKey: 'jhsdf99845fd98qwed42ebdyeqwd-3r98f373f=qwrq3rfr3rf',
+//   s3Url: 'https:/your-custom-s3-url.com/',
+// }
 
 
 // const ReactS3Client = new S3(config);
@@ -67,4 +86,25 @@ const config = {
 //         location: "https://myBucket.s3.amazonaws.com/media/test-file.jpg"
 //   }
 // }
+
+    // <Router>
+
+    //   <div className="App">
+    //     <Header />
+    //     <Switch>
+
+    //       {/* <Redirect exact path from="/" to="/Home" /> */}
+    //       <Route exact path="/Home"><Home /></Route> 
+    //       <Route exact path="/SignUp"><SignUp /></Route> 
+
+
+
+    //     </Switch>
+    //     <Footer />
+
+    //   </div>
+
+    // </Router>{/* 
+
+
 

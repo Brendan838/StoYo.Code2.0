@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+#root {
+height:100%;
+
+}
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Roboto:wght@100;300&display=swap');
+
+#mainHeader {
+
+font-family: 'Major Mono Display', monospace;
+}
