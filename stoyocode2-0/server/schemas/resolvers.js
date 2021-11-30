@@ -60,6 +60,7 @@ const resolvers = {
 
     //   return { token, user };
     // },
+
     addFolder: async (parent, { folderName }, context) => {
       if (context.user) {
         const thought = await Folder.create({
