@@ -1,26 +1,36 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Thought } = require('../models');
+const { User, Snippet, Folder } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find().populate('thoughts');
+      return User.find().populate('folders');
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username }).populate('thoughts');
+      return User.findOne({ username }).populate('folder');
     },
-    thoughts: async (parent, { username }) => {
+    // resolve folders
+    folders: async (parent, { username }) => {
       const params = username ? { username } : {};
-      return Thought.find(params).sort({ createdAt: -1 });
+      return Folder.find(params).populate('snippets');
     },
-    thought: async (parent, { thoughtId }) => {
-      return Thought.findOne({ _id: thoughtId });
+    folder: async (parent, { folderId }) => {
+      return Folder.findOne({ _id: folderId }),populate('snippet');
     },
+    // resolve snippets
+    snippets: async (parent, { username }) => {
+      const params = username ? { username } : {};
+      return Snippet.find(params).sort({ createdAt: -1 });
+    },
+    snippet: async (parent, { snippetId }) => {
+      return Snippet.findOne({ _id: snippetId });
+    },
+    // What does me do?
     me: async (parent, args, context) => {
       console.log("context", context)
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('thoughts');
+        return User.findOne({ _id: context.user._id }).populate('folder');
       }
 
       throw new AuthenticationError('You need to be logged in!');
@@ -28,51 +38,51 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      const token = signToken(user);
-      return { token, user };
-    },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+    // addUser: async (parent, { username, email, password }) => {
+    //   const user = await User.create({ username, email, password });
+    //   const token = signToken(user);
+    //   return { token, user };
+    // },
+    // login: async (parent, { username, password }) => {
+    //   const user = await User.findOne({ email });
 
-      if (!user) {
-        throw new AuthenticationError('No user found with this email address');
-      }
+    //   if (!user) {
+    //     throw new AuthenticationError('Username/Password does not exists!');
+    //   }
 
-      const correctPw = await user.isCorrectPassword(password);
+    //   const correctPw = await user.isCorrectPassword(password);
 
-      if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials');
-      }
+    //   if (!correctPw) {
+    //     throw new AuthenticationError('Incorrect credentials');
+    //   }
 
-      const token = signToken(user);
+    //   const token = signToken(user);
 
-      return { token, user };
-    },
-    addThought: async (parent, { thoughtText }, context) => {
+    //   return { token, user };
+    // },
+    addFolder: async (parent, { folderName }, context) => {
       if (context.user) {
-        const thought = await Thought.create({
-          thoughtText,
-          thoughtAuthor: context.user.username,
+        const thought = await Folder.create({
+          folderName,
+          folderAuthor: context.user.username,
         });
 
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { thoughts: thought._id } }
-        );
+        // await User.findOneAndUpdate(
+        //   { _id: context.user._id },
+        //   { $addToSet: { thoughts: thought._id } }
+        // );
 
-        return thought;
+        return folder;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    addComment: async (parent, { thoughtId, commentText }, context) => {
+    addSnippet: async (parent, { snippetName, snippetText }, context) => {
       if (context.user) {
-        return Thought.findOneAndUpdate(
-          { _id: thoughtId },
+        return Snippet.findOneAndUpdate(
+          { _id: snippetId },
           {
             $addToSet: {
-              comments: { commentText, commentAuthor: context.user.username },
+              comments: { snippetText, createdAt },
             },
           },
           {
@@ -83,31 +93,30 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    removeThought: async (parent, { thoughtId }, context) => {
+    removeFolder: async (parent, { folderId }, context) => {
       if (context.user) {
-        const thought = await Thought.findOneAndDelete({
-          _id: thoughtId,
-          thoughtAuthor: context.user.username,
+        const folder = await Folder.findOneAndDelete({
+          _id: folderId,
+          folderAuthor: context.user.username,
         });
 
         await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { thoughts: thought._id } }
+          { $pull: { folder: folder._id } }
         );
 
-        return thought;
+        return folder;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    removeComment: async (parent, { thoughtId, commentId }, context) => {
+    removeSnippet: async (parent, { folderId, snippetId }, context) => {
       if (context.user) {
-        return Thought.findOneAndUpdate(
-          { _id: thoughtId },
+        return Folder.findOneAndUpdate(
+          { _id: folderId },
           {
             $pull: {
-              comments: {
-                _id: commentId,
-                commentAuthor: context.user.username,
+              snippets: {
+                _id: snippetId,
               },
             },
           },

@@ -1,4 +1,5 @@
 const User = require('./User');
-const Thought = require('./Thought');
+const Snippet = require('./Snippet');
+const Folder = require('./Folder');
 
-module.exports = { User, Thought };
+module.exports = { User, Snippet, Folder };

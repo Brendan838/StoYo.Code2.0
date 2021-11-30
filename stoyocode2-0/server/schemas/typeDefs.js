@@ -6,45 +6,37 @@ const typeDefs = gql`
     username: String
     email: String
     password: String
-    thoughts: [Thought]!
+    snippets: [Snippet]!
   }
-
-  type Thought {
+  type Snippet {
     _id: ID
-    thoughtText: String
-    thoughtAuthor: String
-    createdAt: String
-    comments: [Comment]!
-  }
-
-  type Comment {
-    _id: ID
-    commentText: String
-    commentAuthor: String
+    snippetName: String
+    snippetText: String
     createdAt: String
   }
-
-  type Auth {
-    token: ID!
-    user: User
+  type Folder {
+    _id: ID
+    folderName: String
+    folderAuthor: [User]
+    snippets: [Snippet]
   }
-
   type Query {
     users: [User]
     user(username: String!): User
-    thoughts(username: String): [Thought]
-    thought(thoughtId: ID!): Thought
+    snippets(username: String): [Snippet]
+    snippet(snippetID: ID!): Snippet
+    folders(username: String): [Folder]
+    folder(folderID: ID!): Folder
     me: User
   }
-
   type Mutation {
-    addUser(username: String!, email: String!, password: String!): Auth
-    login(email: String!, password: String!): Auth
-    addThought(thoughtText: String!): Thought
-    addComment(thoughtId: ID!, commentText: String!): Thought
-    removeThought(thoughtId: ID!): Thought
-    removeComment(thoughtId: ID!, commentId: ID!): Thought
+    # addUser(username: String!, email: String!, password: String!): Auth
+    # login(email: String!, password: String!): Auth
+    addSnippet(snippetText: String!, snippetName: String!): Snippet
+    addFolder(folderId: ID!, folderName: String!): Folder
+    removeSnippet(snippetId: ID!): Snippet
+    removeFolder(folderId: ID!): Folder
   }
-`;
+`
 
 module.exports = typeDefs;
