@@ -8,21 +8,18 @@ const typeDefs = gql`
     password: String
     snippets: [Snippet]!
   }
-
   type Snippet {
     _id: ID
     snippetName: String
     snippetText: String
     createdAt: String
   }
-
   type Folder {
     _id: ID
     folderName: String
     folderAuthor: [User]
     snippets: [Snippet]
   }
-
   type Query {
     users: [User]
     user(username: String!): User
@@ -32,15 +29,14 @@ const typeDefs = gql`
     folder(folderID: ID!): Folder
     me: User
   }
-
   type Mutation {
-    addUser(username: String!, email: String!, password: String!): Auth
-    login(email: String!, password: String!): Auth
-    addSnippet(snippetText: String!): Snippet
+    # addUser(username: String!, email: String!, password: String!): Auth
+    # login(email: String!, password: String!): Auth
+    addSnippet(snippetText: String!, snippetName: String!): Snippet
     addFolder(folderId: ID!, folderName: String!): Folder
     removeSnippet(snippetId: ID!): Snippet
     removeFolder(folderId: ID!): Folder
   }
-`;
+`
 
 module.exports = typeDefs;
