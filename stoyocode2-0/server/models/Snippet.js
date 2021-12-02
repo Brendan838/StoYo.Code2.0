@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 // Do we need the createdAt object?
-  //Do we want to keep the comment option?
+//Do we want to keep the comment option?
 
 const snippetSchema = new Schema({
   snippetText: {
@@ -12,11 +12,15 @@ const snippetSchema = new Schema({
     maxlength: 280,
     trim: true,
   },
-  snippetAuthor: {
-    type: String,
-    required: true,
-    trim: true,
+  snippetId: {
+    type: Number,
+    required: true
   },
+  // snippetAuthor: {
+  //   type: String,
+  //   required: true,
+  //   trim: true,
+  // },
   createdAt: {
     type: Date,
     default: Date.now,
