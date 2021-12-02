@@ -40,6 +40,7 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              color= "secondary"
               margin="normal"
               required
               fullWidth
@@ -50,6 +51,7 @@ export default function SignIn() {
               autoFocus
             />
             <TextField
+              color= "secondary"
               margin="normal"
               required
               fullWidth
@@ -71,7 +73,7 @@ export default function SignIn() {
             <Grid container sx={{display: "flex", justifyContent: "center"}}>
             
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/login" variant="body2" color="secondary">
                   {"Already have an account? Log In!"}
                 </Link>
               </Grid>
