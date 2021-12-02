@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AppBar,Box,Toolbar,Typography,Button,IconButton} from '@mui/material/';
+import {AppBar,Box,Toolbar,Typography,Button,IconButton,Link} from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export default function NavBar() {
@@ -19,7 +19,10 @@ export default function NavBar() {
           <Typography id="mainHeader" variant="h6" component="div" sx={{ flexGrow: 1 }}>
             StoYo.Code
           </Typography>
-          <Button color="inherit">Login</Button>
+              <Link href="/login" variant="body2">
+              <Button color="inherit">Login</Button>
+              </Link>
+          
         </Toolbar>
       </AppBar>
     </Box>

@@ -15,7 +15,9 @@ import {Box} from "@mui/material/";
 
 import Home from './pages/Home'
 import NavBar from './components/NavBar'
-import SignIn from './pages/SignIn'
+import LogIn from './pages/LogIn'
+import SignUp from './pages/SignUp'
+
 const App = () => {
 
 
@@ -38,7 +40,11 @@ const App = () => {
     <NavBar/>
 
     <Route exact path="/login">
-    <SignIn/>
+    <LogIn/>
+    </Route>
+
+    <Route exact path="/signup">
+    <SignUp/>
     </Route>
 
     <Route exact path="/">
