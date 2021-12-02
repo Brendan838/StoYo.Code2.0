@@ -19,6 +19,9 @@
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i"
   },
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

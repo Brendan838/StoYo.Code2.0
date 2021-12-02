@@ -38,28 +38,28 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, { email, password }) => {
-      const user = await User.create({ email, password });
-      const token = signToken(user);
-      return { token, user };
-    },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+    // addUser: async (parent, { email, password }) => {
+    //   const user = await User.create({ email, password });
+    //   const token = signToken(user);
+    //   return { token, user };
+    // },
+    // login: async (parent, { email, password }) => {
+    //   const user = await User.findOne({ email });
 
-      if (!user) {
-        throw new AuthenticationError('email/Password does not exists!');
-      }
+    //   if (!user) {
+    //     throw new AuthenticationError('email/Password does not exists!');
+    //   }
 
-      const correctPw = await user.isCorrectPassword(password);
+    //   const correctPw = await user.isCorrectPassword(password);
 
-      if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials');
-      }
+    //   if (!correctPw) {
+    //     throw new AuthenticationError('Incorrect credentials');
+    //   }
 
-      const token = signToken(user);
+    //   const token = signToken(user);
 
-      return { token, user };
-    },
+    //   return { token, user };
+    // },
 
     addFolder: async (parent, { folderName }, context) => {
       if (context.user) {
