@@ -30,7 +30,7 @@ const resolvers = {
     me: async (parent, args, context) => {
       console.log("context", context)
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('folders');
+        return User.findOne({ _id: context.user._id });
       }
 
       throw new AuthenticationError('You need to be logged in!');
@@ -63,14 +63,14 @@ const resolvers = {
 
     addFolder: async (parent, { folderName }, context) => {
       if (context.user) {
-        const thought = await Folder.create({
+        const folder = await Folder.create({
           folderName,
           folderAuthor: context.user.email,
         });
 
         await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { thoughts: thought._id } }
+          { $addToSet: { folder: folder._id } }
         );
 
         return Folder;

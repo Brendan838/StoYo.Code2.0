@@ -19,13 +19,13 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Folder'
     },
-  ]
-  // snippet: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Snippet',
-  //   },
-  // ],
+  ],
+  snippet: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Snippet',
+    },
+  ],
 });
 
 userSchema.pre('save', async function (next) {
