@@ -1,44 +1,57 @@
+import React, { useState } from 'react';
 import {Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container} from '@mui/material/';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
-import React, { useState } from 'react';
-
-
-import { useMutation } from '@apollo/client';
-import { ADD_USER } from '../utils/mutations';
-
 import Auth from '../utils/auth';
+//TODO: set up ADD_USER reference from mutation.js file
+import {ADD_USER} from '../utils/mutations';
+//TODO: set up useMutation 
+import {useMutation} from '@apollo/react-hooks';
+export default function SignIn() {
 
-const Signup = () => {
-  const [formState, setFormState] = useState({
-    email: '',
-    password: '',
-  });
-  const [addUser, { error, data }] = useMutation(ADD_USER);
+const [addUser] = useMutation(ADD_USER);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  
+const handleSubmit = async (event) => {
 
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
+  event.preventDefault();
+  const newData = new FormData(event.currentTarget);
+  // eslint-disable-next-line no-console
+  const submitData = {
+    email: newData.get('email'),
+    password: newData.get('password'),
+  }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(formState);
+  
 
-    try {
-      const { data } = await addUser({
-        variables: { ...formState },
-      });
+  try {
+      //const response = await createUser(userFormData);
+      //set up useMutation hook
+      const {data} = await addUser({ variables: submitData  });
+      console.log(data);
 
+      if (!data) {
+        throw new Error("something went wrong!");
+      }
+
+      //pass in token recevied from mutation response
       Auth.login(data.addUser.token);
-    } catch (e) {
-      console.error(e);
+      //part of mutation use
+      window.location.redirect("/");
+    } catch (err) {
+      console.error(err);
+     
     }
+
+
+
+
   };
+
+
+
+
+
+
 
   return (
 
@@ -76,7 +89,6 @@ const Signup = () => {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={handleChange}
             />
             <TextField
               color= "secondary"
@@ -88,7 +100,6 @@ const Signup = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={handleChange}
             />
            
             <Button
@@ -116,5 +127,3 @@ const Signup = () => {
 </Box>
   );
 }
-
-export default Signup;

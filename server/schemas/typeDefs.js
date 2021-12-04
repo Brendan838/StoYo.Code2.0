@@ -23,10 +23,7 @@ const typeDefs = gql`
     folderAuthor: [User]
     snippets: [Snippet]
   }
-  type Auth {
-    token: ID
-    user: User
-  }
+  
   type Query {
     users: [User]
     user(email: String!): User
@@ -37,7 +34,7 @@ const typeDefs = gql`
     me: User
   }
   type Mutation {
-    addUser(username: String, email: String!, password: String!): Auth
+    addUser( email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     addSnippet(snippetText: String!, snippetName: String!): Snippet
     addFolder(folderId: ID!, folderName: String!): Folder
