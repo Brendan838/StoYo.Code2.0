@@ -1,6 +1,6 @@
 
 //NPM Library Imports
-import React,{ useState} from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,7 +10,7 @@ import {
 
 import "../App.css";
 //import S3 from 'react-aws-s3';
-import {Button, TextField, Box} from "@mui/material/";
+import { Button, TextField, Box } from "@mui/material/";
 
 
 import AddIcon from '@mui/icons-material/Add';
@@ -24,11 +24,12 @@ import MainTextField from '../components/MainTextField'
 import ColorDropDown from '../components/ColorDropDown'
 import SnippetContainer from '../components/SnippetContainer'
 import FolderContainer from '../components/FolderContainer'
+import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
 
 const Home = () => {
 
-const [snipName, setSnipName] = useState('')
-const [snippetBody, setSnippetBody] = useState('')
+  const [snipName, setSnipName] = useState('')
+  const [snippetBody, setSnippetBody] = useState('')
 
 
 
@@ -39,169 +40,183 @@ const [snippetBody, setSnippetBody] = useState('')
 
 
 
-function handleInput(e) {
-let inputType = e.target.name;
-let inputValue = e.target.value;
+  function handleInput(e) {
+    let inputType = e.target.name;
+    let inputValue = e.target.value;
 
-   switch (inputType){
-    case('title'):
-    setSnipName(inputValue);
-    break;
-    case('body'):
-    setSnippetBody(inputValue);
-    break;
-}
-}
+    switch (inputType) {
+      case ('title'):
+        setSnipName(inputValue);
+        break;
+      case ('body'):
+        setSnippetBody(inputValue);
+        break;
+    }
+  }
 
-const saveSnippet = function(){
-//This is where we need to save snippet name and title
-//declare new object that will be sent via useMutation
-const newSnippet = {
-name: snipName,
-snippet: snippetBody
-}
+  const saveSnippet = function () {
+    //This is where we need to save snippet name and title
+    //declare new object that will be sent via useMutation
+    const newSnippet = {
+      name: snipName,
+      snippet: snippetBody
+    }
 
-//instead of alert- we can use async and await and a utils function to send this data to data base.
-alert(`You submitted a new snippet called ${newSnippet.name}`)
-setSnipName('')
-setSnippetBody('')
-//run an appllo cache function to reset the results of the 
+    //instead of alert- we can use async and await and a utils function to send this data to data base.
+    alert(`You submitted a new snippet called ${newSnippet.name}`)
+    setSnipName('')
+    setSnippetBody('')
+    //run an appllo cache function to reset the results of the 
 
-}
+  }
 
 
   return (
-  
-
-
-<>
-{/* Folder Buttons Area*/}
-<Box sx={{ bgcolor: 'white', ml: 1, mr: 1, 
-              gridColumnStart: 1, 
-              gridColumnEnd: 3, 
-              gridRowStart: 7,
-              gridRowEnd: 7,
-              display: 'flex',
-              justifyContent: 'left',
-              alignItems: 'center'}}>
-
-
-  <Button variant="outlined" startIcon={<AddIcon />}>
-  Folder
-  </Button>
-</Box>
-
-{/* Add snippet/Snippet Buttons Area  */}
-<Box sx={{ bgcolor: 'white', ml: 1, mr: 1, 
-              gridColumnStart: 3, 
-              gridColumnEnd: 5, 
-              gridRowStart: 7,
-              gridRowEnd: 7,
-              display: 'flex',
-              justifyContent: 'left',
-              alignItems: 'center'}}>
 
 
 
-
-  <Button variant="outlined" startIcon={<AddIcon />}>
-  Snippet
-  </Button>
-
-</Box>
-
-{/* This is the "Snippet Name" field */}
-<Box 
-sx = {{ 
-bgcolor: 'white', ml: 1, mr: 1, 
-gridColumnStart: 5, 
-gridColumnEnd: 7, 
-gridRowStart: 7,
-gridRowEnd: 7}}>
-
-<TextField 
-sx= {{  
-ml: 1, 
-mr: 1, 
-height: '50%',
-}}
-id="standard-basic" 
-label="Snippet Name" 
-name = "title"
-variant="standard"
-onChange = {handleInput}
-value = {snipName} />
-</Box>
+    <>
+      {/* Folder Buttons Area*/}
+      <Box sx={{
+        bgcolor: 'white', ml: 1, mr: 1,
+        gridColumnStart: 1,
+        gridColumnEnd: 3,
+        gridRowStart: 7,
+        gridRowEnd: 7,
+        display: 'flex',
+        justifyContent: 'left',
+        alignItems: 'center'
+      }}>
 
 
-{/* This is the dropdown for searching for folders */}
+        <Button variant="outlined" startIcon={<AddIcon />}>
+          Folder
+        </Button>
+      </Box>
 
-<Box sx={{ bgcolor: 'white', ml: 1, mr: 1, 
-          gridColumnStart: 7, 
-          gridColumnEnd: 10, 
+      {/* Add snippet/Snippet Buttons Area  */}
+      <Box sx={{
+        bgcolor: 'white', ml: 1, mr: 1,
+        gridColumnStart: 3,
+        gridColumnEnd: 5,
+        gridRowStart: 7,
+        gridRowEnd: 7,
+        display: 'flex',
+        justifyContent: 'left',
+        alignItems: 'center'
+      }}>
+
+
+
+
+        <Button variant="outlined" startIcon={<AddIcon />}>
+          Snippet
+        </Button>
+
+      </Box>
+
+      {/* This is the "Snippet Name" field */}
+      <Box
+        sx={{
+          bgcolor: 'white', ml: 1, mr: 1,
+          gridColumnStart: 5,
+          gridColumnEnd: 7,
           gridRowStart: 7,
-          gridRowEnd: 7}}>
+          gridRowEnd: 7
+        }}>
 
-  <FolderSearch />
-</Box>
-
-{/* This box contains the save, delete, and color buttons field */}
-<Box sx={{ bgcolor: 'white', ml: 1, mr: 1, 
-              gridColumnStart: 10, 
-              gridColumnEnd: 13, 
-              gridRowStart: 7,
-              gridRowEnd: 7,
-              display: 'flex',
-              justifyContent: 'right',
-              alignItems: 'center'}}>
-
-    <Button  sx={{ 
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center', m:1}}variant="outlined" onClick = {saveSnippet}
-    >
-      <SaveIcon />
-    </Button>
-
-    <Button  sx={{ 
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center', mr: 1}} variant="outlined" >
-      <DeleteForeverIcon />
-    </Button>
-
-    <ColorDropDown/>
-
-</Box>
-
-{/* This is the container for the snippet folders  */}
-<FolderContainer/>
-
-{/* This is the container for the snippets  */}
-<SnippetContainer/>
+        <TextField
+          sx={{
+            ml: 1,
+            mr: 1,
+            height: '50%',
+          }}
+          id="standard-basic"
+          label="Snippet Name"
+          name="title"
+          variant="standard"
+          onChange={handleInput}
+          value={snipName} />
+      </Box>
 
 
-{/* This is the Text Area for snippets */}
-<Box sx={{ bgcolor: 'white', ml: 1, mr: 1, 
-              gridColumnStart: 5, 
-              gridColumnEnd: 13, 
-              gridRowStart: 8,
-              gridRowEnd: 20}}>
+      {/* This is the dropdown for searching for folders */}
 
- <TextField
+      <Box sx={{
+        bgcolor: 'white', ml: 1, mr: 1,
+        gridColumnStart: 7,
+        gridColumnEnd: 10,
+        gridRowStart: 7,
+        gridRowEnd: 7
+      }}>
+
+        <FolderSearch />
+      </Box>
+
+      {/* This box contains the save, delete, and color buttons field */}
+      <Box sx={{
+        bgcolor: 'white', ml: 1, mr: 1,
+        gridColumnStart: 10,
+        gridColumnEnd: 13,
+        gridRowStart: 7,
+        gridRowEnd: 7,
+        display: 'flex',
+        justifyContent: 'right',
+        alignItems: 'center'
+      }}>
+
+        <Button sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center', m: 1
+        }} variant="outlined" onClick={saveSnippet}
+        >
+          <SaveIcon />
+        </Button>
+
+        <Button sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          alignItems: 'center', mr: 1
+        }} variant="outlined" >
+          <DeleteForeverIcon />
+        </Button>
+
+        <ColorDropDown />
+
+      </Box>
+
+      {/* This is the container for the snippet folders  */}
+      <FolderContainer />
+
+      {/* This is the container for the snippets  */}
+      <SnippetContainer />
+
+
+      {/* This is the Text Area for snippets */}
+      <Box sx={{
+        bgcolor: 'white', ml: 1, mr: 1,
+        gridColumnStart: 5,
+        gridColumnEnd: 13,
+        gridRowStart: 8,
+        gridRowEnd: 20
+      }}>
+
+        <TextField
           id="standard-multiline-static"
-          sx ={{ width: '100%',
-                  }}
+          sx={{
+            width: '100%',
+          }}
           multiline
           rows={28}
-          name = "body"
-          value = {snippetBody}
+          name="body"
+          value={snippetBody}
           variant="filled"
-          onChange = {handleInput}
+          onChange={handleInput}
         />
 
 
-</Box>
+      </Box>
 
 
 
@@ -214,7 +229,7 @@ value = {snipName} />
 
 
 
-  {/* <TextField
+      {/* <TextField
           sx={{ 
 
 
@@ -225,11 +240,11 @@ value = {snipName} />
           block
           defaultValue="//New Snip!"
           variant="standard"/> */}
-        
- 
 
-  {/* <Button sx={{ gridArea: 'Button'}}>Hello!</Button> */}
-</>
+
+
+      {/* <Button sx={{ gridArea: 'Button'}}>Hello!</Button> */}
+    </>
 
 
 
