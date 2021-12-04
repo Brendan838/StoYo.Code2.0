@@ -13,14 +13,14 @@ export default function SignIn() {
     });
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
 
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
-  };
+  //   setFormState({
+  //     ...formState,
+  //     [name]: value,
+  //   });
+  // };
 
   return (
 
@@ -57,7 +57,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={handleChange}
+              //onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -68,7 +68,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={handleChange}
+              //onChange={handleChange}
             />
            
             <Button
