@@ -23,10 +23,6 @@ const typeDefs = gql`
     folderAuthor: [User]
     snippets: [Snippet]
   }
-  type Auth {
-    token: ID
-    user: User
-  }
   type Query {
     users: [User]
     user(email: String!): User
