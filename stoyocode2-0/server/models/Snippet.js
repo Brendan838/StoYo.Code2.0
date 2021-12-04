@@ -16,11 +16,11 @@ const snippetSchema = new Schema({
     type: Number,
     required: true
   },
-  // snippetAuthor: {
-  //   type: String,
-  //   required: true,
-  //   trim: true,
-  // },
+  snippetAuthor: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

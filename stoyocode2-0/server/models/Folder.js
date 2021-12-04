@@ -8,11 +8,11 @@ const folderSchema = new Schema({
     trim: true
   },
 
-  // folderAuthor: {
-  //     type: String,
-  //     required: true,
-  //     trim: true
-  // },
+  folderAuthor: {
+      type: String,
+      required: true,
+      trim: true
+  },
   snippet: [
     {
       type: Schema.Types.ObjectId,
