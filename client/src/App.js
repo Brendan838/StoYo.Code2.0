@@ -11,20 +11,32 @@ import "./App.css";
 //import S3 from 'react-aws-s3';
 import {Box} from "@mui/material/";
 
-
+import Auth from './utils/auth'
 
 import Home from './pages/Home'
 import NavBar from './components/NavBar'
 import LogIn from './pages/LogIn'
 import SignUp from './pages/SignUp'
-
+import { ApolloProvider } from '@apollo/react-hooks';
+import ApolloClient from 'apollo-boost';
 const App = () => {
 
 
+const client = new ApolloClient({
+  request: (operation) => {
+  const token = localStorage.getItem('id_token');
 
+    operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : '',
+    },
+});
+  },
+  uri: '/graphql',
+});
 
   return (
-
+<ApolloProvider client={client}>
  <Router>
     <Box 
       sx={{
@@ -46,14 +58,16 @@ const App = () => {
     <Route exact path="/signup">
     <SignUp/>
     </Route>
-
+    
     <Route exact path="/">
-    <Home/>
+    {Auth.loggedIn()? 
+    (<Home/>) :
+    (<LogIn/>)}
     </Route>
 
     </Box>
 </Router>
-
+</ApolloProvider>
 
   );
 

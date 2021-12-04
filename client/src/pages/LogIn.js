@@ -1,26 +1,58 @@
 import * as React from 'react';
 import {Avatar, Button, CssBaseline, TextField, Link, Grid, Box, Typography, Container} from '@mui/material/';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Auth from '../utils/auth'
+import {LOGIN_USER} from '../utils/mutations';
+import {useMutation} from '@apollo/client';
+
+
+
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+const [login] = useMutation(LOGIN_USER);
+
+const handleSubmit = async (event) => {
+
+  event.preventDefault();
+  const newData = new FormData(event.currentTarget);
+  // eslint-disable-next-line no-console
+  const submitData = {
+    email: newData.get('email'),
+    password: newData.get('password'),
+  }
+
+  
+
+  try {
+      //const response = await createUser(userFormData);
+      //set up useMutation hook
+      const {data} = await login({ variables: submitData  });
+      console.log(data);
+
+      if (!data) {
+        throw new Error("something went wrong!");
+      }
+
+      //pass in token recevied from mutation response
+      Auth.login(data.login.token);
+      //part of mutation use
+      window.location.redirect("/");
+    } catch (err) {
+      console.error(err);
+     
+    }
+
+
+
+
   };
 
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
 
-  //   setFormState({
-  //     ...formState,
-  //     [name]: value,
-  //   });
-  // };
+
+
+
+
 
   return (
 
