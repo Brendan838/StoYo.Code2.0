@@ -24,7 +24,7 @@ import MainTextField from '../components/MainTextField'
 import ColorDropDown from '../components/ColorDropDown'
 import SnippetContainer from '../components/SnippetContainer'
 import FolderContainer from '../components/FolderContainer'
-import { GET_ME } from "../utils/queries";
+import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
 
 const Home = () => {
 
