@@ -11,26 +11,41 @@ export default function FolderContainer() {
 //     setFolder(event.target.value);
 //   };
 
+const folderArray = [
+
+{
+name: "javascript",
+id: 1
+
+}
+
+]
+
+
  //get Folders for this user
  //for each folder that exists, create a folder button
-  const folders = [
+  function thisWorked() {
+alert("this worked!")
+}
 
-  {
-  id: 1, 
-  name: 'javascript'
-  },
+const listOfFolders = folderArray.map((folder)=> {
+return (
+<Button
+  sx={{ 
+  bgcolor: 'black', 
+  m: 1, 
+  width:'90%'
+  }} 
+variant="contained" 
+color="success" 
+startIcon = { <FolderOpenIcon/> }
+key = {folder.id}
+onClick = {thisWorked}
+>
+{folder.name}
+</Button>)
+});
 
-  {
-  id: 2, 
-  name: 'html'
-  },
-  {
-  id: 3, 
-  name: 'CSS'
-  }
-
-  ]
- 
 
 
   return (
@@ -40,7 +55,9 @@ export default function FolderContainer() {
               gridRowStart: 8,
               gridRowEnd: 24}} variant="filled">
 
-  <FolderList folderArray = {folders}/>
+  {
+listOfFolders
+}
 
   </Box>
 
