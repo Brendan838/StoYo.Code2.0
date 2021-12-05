@@ -24,3 +24,4 @@ const folderSchema = new Schema({
 const Folder = model('Folder', folderSchema);
 
 module.exports = Folder;
+

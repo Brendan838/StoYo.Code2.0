@@ -8,15 +8,22 @@ const resolvers = {
       return User.find().populate('folders');
     },
     user: async (parent, { email }) => {
-      return User.findOne({ email }).populate('folders');
+      return User.findOne({ email }).populate('folder');
     },
     // resolve folders
-    folders: async (parent, { email }) => {
-      const params = email ? { email } : {};
-      return Folder.find(params).populate('snippets');
+    folders: async (parent, args, context) => {
+      // const params = email ? { email } : {};
+      // return Folder.find(params).populate('snippets');
+    if (context.user) {
+        const folderInfo = await Folder.find({ folderAuthor: context.user.email })
+        return folderInfo;
+      }
+      throw new AuthenticationError("You need to be logged in!");
+
     },
     folder: async (parent, { folderId }) => {
       return Folder.findOne({ _id: folderId }).populate('snippets');
+
     },
     // resolve snippets
     snippets: async (parent, { email }) => {
@@ -61,7 +68,7 @@ const resolvers = {
       return { token, user };
     },
 
-    addFolder: async (parent, { folderName }, context) => {
+    addFolder: async (parent, { folderName, folderAuthor }, context) => {
       if (context.user) {
         const folder = await Folder.create({
           folderName,
@@ -75,7 +82,22 @@ const resolvers = {
 
         return Folder;
       }
-      throw new AuthenticationError('You need to be logged in!');
+
+      else {
+        const folder = await Folder.create({
+          folderName, 
+          folderAuthor, 
+        });
+
+        await User.findOneAndUpdate(
+          { email: folderAuthor},
+          { $addToSet: { folder } }
+        );
+
+        return Folder;
+
+      }
+      // throw new AuthenticationError('You need to be logged in!');
     },
     addSnippet: async (parent, { createdAt, snippetText }, context) => {
       if (context.user) {

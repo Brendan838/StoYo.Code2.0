@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-
+// const folderShema = require('./Folder')
 const userSchema = new Schema({
 
   email: {
@@ -14,12 +14,12 @@ const userSchema = new Schema({
     required: true,
     minlength: 5,
   },
-  folder: [
+  folders: 
     {
       type: Schema.Types.ObjectId,
       ref: 'Folder'
     },
-  ],
+
   snippet: [
     {
       type: Schema.Types.ObjectId,

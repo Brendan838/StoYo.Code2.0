@@ -7,7 +7,9 @@ import {
   // Redirect,
   Switch,
 } from "react-router-dom";
+import Auth from '../utils/auth';
 
+import {useMutation, useQuery} from '@apollo/client';
 import "../App.css";
 //import S3 from 'react-aws-s3';
 import { Button, TextField, Box } from "@mui/material/";
@@ -26,17 +28,42 @@ import SnippetContainer from '../components/SnippetContainer'
 import FolderContainer from '../components/FolderContainer'
 import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
 
+
+
+
+
+
+
 const Home = () => {
+
+//folder logic
+// function getFolderData({ Auth. }) { 
+//  const { loading, error, data } = useQuery(GET_CARS); 
+//  if (loading) return '<Loading />'; 
+//  if (error) return `Error! ${error.message}`; 
+//  return ( 
+//   <select name="car" onChange={onCarSelected}>
+//  {data.cars.map(car => 
+//   ( <option key={car.id} value={car.model}> 
+//   {car.model} 
+//   </option> ))} 
+//   </select> 
+//   ); 
+// }
+
+
+
+
+const { loading, error, data } = useQuery(QUERY_FOLDERS); 
+
+
+
+
+
+// const getFolderData = async
 
   const [snipName, setSnipName] = useState('')
   const [snippetBody, setSnippetBody] = useState('')
-
-
-
-
-
-
-
 
 
 
@@ -77,7 +104,7 @@ const Home = () => {
 
     <>
       {/* Folder Buttons Area*/}
-      <Box sx={{
+      {/* <Box sx={{
         bgcolor: 'white', ml: 1, mr: 1,
         gridColumnStart: 1,
         gridColumnEnd: 3,
@@ -92,7 +119,7 @@ const Home = () => {
         <Button variant="outlined" startIcon={<AddIcon />}>
           Folder
         </Button>
-      </Box>
+      </Box> */}
 
       {/* Add snippet/Snippet Buttons Area  */}
       <Box sx={{
@@ -187,10 +214,10 @@ const Home = () => {
       </Box>
 
       {/* This is the container for the snippet folders  */}
-      <FolderContainer />
+      <FolderContainer data = {data}/>
 
       {/* This is the container for the snippets  */}
-      <SnippetContainer />
+      <SnippetContainer data = {data} />
 
 
       {/* This is the Text Area for snippets */}

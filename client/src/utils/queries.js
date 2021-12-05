@@ -35,7 +35,7 @@ export const QUERY_SINGLE_SNIPPET = gql`
   }
 `;
 export const QUERY_FOLDERS = gql`
-  query getFolders {
+  query folders {
     folders {
       _id
       folderName

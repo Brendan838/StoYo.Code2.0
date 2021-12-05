@@ -9,7 +9,8 @@ const typeDefs = gql`
     _id: ID
     email: String
     password: String
-    snippets: [Snippet]!
+    snippets: [Snippet]
+    folders: [Folder]
   }
   type Snippet {
     _id: ID
@@ -17,19 +18,23 @@ const typeDefs = gql`
     snippetText: String
     createdAt: String
   }
+
+
+
+
   type Folder {
     _id: ID
     folderName: String
-    folderAuthor: [User]
     snippets: [Snippet]
+    folderAuthor: String
   }
   
   type Query {
     users: [User]
-    user(email: String!): User
+    user(email: String): User
     snippets(email: String): [Snippet]
     snippet(snippetID: ID!): Snippet
-    folders(username: String): [Folder]
+    folders: [Folder]
     folder(folderID: ID!): Folder
     me: User
   }
@@ -37,7 +42,7 @@ const typeDefs = gql`
     addUser( email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     addSnippet(snippetText: String!, snippetName: String!): Snippet
-    addFolder(folderId: ID!, folderName: String!): Folder
+    addFolder(folderAuthor: String!, folderName: String!): Folder
     removeSnippet(snippetId: ID!): Snippet
     removeFolder(folderId: ID!): Folder
   }
