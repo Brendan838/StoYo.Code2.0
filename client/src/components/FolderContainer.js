@@ -13,6 +13,10 @@ export default function FolderContainer() {
 
  //get Folders for this user
  //for each folder that exists, create a folder button
+ const { loading, error, data } = useQuery{QUERY_FOLDERS}
+
+ console.log(data)
+ 
   const folders = [
 
   {
