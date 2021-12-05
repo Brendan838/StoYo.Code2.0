@@ -54,9 +54,7 @@ const Home = () => {
 
 
 
-const { loading, error, data } = useQuery(QUERY_FOLDERS); 
-
-
+// const { loading, error, data } = useQuery(QUERY_FOLDERS); 
 
 
 
@@ -214,10 +212,10 @@ const { loading, error, data } = useQuery(QUERY_FOLDERS);
       </Box>
 
       {/* This is the container for the snippet folders  */}
-      <FolderContainer data = {data}/>
+      <FolderContainer />
 
       {/* This is the container for the snippets  */}
-      <SnippetContainer data = {data} />
+      <SnippetContainer  />
 
 
       {/* This is the Text Area for snippets */}

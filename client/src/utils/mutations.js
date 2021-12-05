@@ -54,3 +54,10 @@ export const ADD_SNIPPET = gql`
   }
 `;
 
+export const DELETE_FOLDER = gql`
+  mutation deleteFolder($folderId: ID!) {
+    deleteFolder(folderId: $folderId) {
+      _id
+    }
+  }
+`;

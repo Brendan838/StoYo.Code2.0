@@ -44,7 +44,7 @@ const typeDefs = gql`
     addSnippet(snippetText: String!, snippetName: String!): Snippet
     addFolder(folderAuthor: String!, folderName: String!): Folder
     removeSnippet(snippetId: ID!): Snippet
-    removeFolder(folderId: ID!): Folder
+    deleteFolder(folderId: ID!): Folder
   }
 `
 

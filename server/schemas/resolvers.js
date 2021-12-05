@@ -16,6 +16,7 @@ const resolvers = {
       // return Folder.find(params).populate('snippets');
     if (context.user) {
         const folderInfo = await Folder.find({ folderAuthor: context.user.email })
+        console.log(folderInfo)
         return folderInfo;
       }
       throw new AuthenticationError("You need to be logged in!");
@@ -116,21 +117,21 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    removeFolder: async (parent, { folderId }, context) => {
-      if (context.user) {
+    deleteFolder: async (parent, { folderId }, context) => {
+      // if (context.user) {
         const folder = await Folder.findOneAndDelete({
           _id: folderId,
-          folderAuthor: context.user.email,
         });
 
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { folder: folder._id } }
-        );
+        // await User.findOneAndUpdate(
+        //   { _id: context.user._id },
+        //   { $pull: { folder: folder._id } }
+        // );
 
         return folder;
-      }
-      throw new AuthenticationError('You need to be logged in!');
+      // }
+      
+throw new AuthenticationError('You need to be logged in!');
     },
     removeSnippet: async (parent, { folderId, snippetId }, context) => {
       if (context.user) {
