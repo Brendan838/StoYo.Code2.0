@@ -33,7 +33,7 @@ alert(`${folderId} is being deleted`)
   try {
       //const response = await createUser(userFormData);
       //set up useMutation hook
-      await deleteOneFolder({ variables: folderId });
+      const {data }= await deleteOneFolder({ variables: folderId });
       }
 
       //pass in token recevied from mutation response

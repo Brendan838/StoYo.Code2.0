@@ -27,13 +27,13 @@ const resolvers = {
 
     },
     // resolve snippets
-    snippets: async (parent, { email }) => {
-      const params = email ? { email } : {};
-      return Snippet.find(params).sort({ createdAt: -1 });
+    snippets: async (parent, args, context) => {
+      const getSnips = Snippet.find({snippetAuthor: context.user.email})
+      return getSnips
     },
-    snippet: async (parent, { snippetId }) => {
-      return Snippet.findOne({ _id: snippetId });
-    },
+    // snippet: async (parent, { snippetId }) => {
+    //   return Snippet.findOne({ _id: snippetId });
+    // },
     // What does me do?
     me: async (parent, args, context) => {
       console.log("context", context)
@@ -100,20 +100,19 @@ const resolvers = {
       }
       // throw new AuthenticationError('You need to be logged in!');
     },
-    addSnippet: async (parent, { createdAt, snippetText }, context) => {
+    addSnippet: async (parent, { snippetName, snippetText, parentFolder }, context) => {
       if (context.user) {
-        return Snippet.findOneAndUpdate(
-          { _id: context.snippetId },
-          {
-            $addToSet: {
-              comments: { snippetText, createdAt },
-            },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
+
+        const newSnip = await Snippet.create(
+         {
+          snippetAuthor: context.user.email,
+          snippetName,
+          snippetText,
+          parentFolder,
+
+         
+          });
+      return newSnip
       }
       throw new AuthenticationError('You need to be logged in!');
     },

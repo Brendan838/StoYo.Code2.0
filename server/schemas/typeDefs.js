@@ -16,7 +16,8 @@ const typeDefs = gql`
     _id: ID
     snippetName: String
     snippetText: String
-    createdAt: String
+    parentFolder: String
+    snippetAuthor: String
   }
 
 
@@ -32,8 +33,7 @@ const typeDefs = gql`
   type Query {
     users: [User]
     user(email: String): User
-    snippets(email: String): [Snippet]
-    snippet(snippetID: ID!): Snippet
+    snippets: [Snippet]
     folders: [Folder]
     folder(folderID: ID!): Folder
     me: User
@@ -41,7 +41,7 @@ const typeDefs = gql`
   type Mutation {
     addUser( email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addSnippet(snippetText: String!, snippetName: String!): Snippet
+    addSnippet(snippetText: String!, snippetName: String!, parentFolder: String): Snippet
     addFolder(folderAuthor: String!, folderName: String!): Folder
     removeSnippet(snippetId: ID!): Snippet
     deleteFolder(folderId: ID!): Folder

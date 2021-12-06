@@ -1,6 +1,4 @@
-
-//NPM Library Imports
-import React, { useState } from "react";
+import React, { useState, useEffect, fetchData } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -22,12 +20,12 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 //Component Imports
 import FolderSearch from '../components/FolderSearch'
 
-import MainTextField from '../components/MainTextField'
+import SnipEditor from '../components/SnipEditor'
 import ColorDropDown from '../components/ColorDropDown'
 import SnippetContainer from '../components/SnippetContainer'
 import FolderContainer from '../components/FolderContainer'
 import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
-
+import { ADD_SNIPPET } from "../utils/mutations";
 
 
 
@@ -36,29 +34,26 @@ import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_
 
 const Home = () => {
 
-//folder logic
-// function getFolderData({ Auth. }) { 
-//  const { loading, error, data } = useQuery(GET_CARS); 
-//  if (loading) return '<Loading />'; 
-//  if (error) return `Error! ${error.message}`; 
-//  return ( 
-//   <select name="car" onChange={onCarSelected}>
-//  {data.cars.map(car => 
-//   ( <option key={car.id} value={car.model}> 
-//   {car.model} 
-//   </option> ))} 
-//   </select> 
-//   ); 
-// }
+
+
+
+const { data, refetch } = useQuery(QUERY_SNIPPETS); 
+const allSnippets = data?.snippets || [];
+// console.log(allSnippets)
+const [snipList,getSnipList] = useState(allSnippets)
+//logic for getting all snippets
 
 
 
 
-// const { loading, error, data } = useQuery(QUERY_FOLDERS); 
 
 
 
-// const getFolderData = async
+//Logic for saving a snippet
+const [addSnippet] = useMutation(ADD_SNIPPET);
+
+
+
 
   const [snipName, setSnipName] = useState('')
   const [snippetBody, setSnippetBody] = useState('')
@@ -79,22 +74,39 @@ const Home = () => {
     }
   }
 
-  const saveSnippet = function () {
+  const saveSnippet = async function () {
     //This is where we need to save snippet name and title
     //declare new object that will be sent via useMutation
-    const newSnippet = {
-      name: snipName,
-      snippet: snippetBody
-    }
 
+    const newSnippet = {
+      snippetName: snipName,
+      snippetText: snippetBody,
+      parentFolder: "All Snips"
+
+
+    }
+    try {
+console.log(newSnippet)
+    const {data} = await addSnippet({ variables: newSnippet,  pollInterval: 500  });
+    console.log(data)
+ const userData = data?.addSnippet || {};
+
+  console.log(userData)
+
+refetch()
+
+    }
+catch{
+console.log("error submitting snippet!")
+}
     //instead of alert- we can use async and await and a utils function to send this data to data base.
-    alert(`You submitted a new snippet called ${newSnippet.name}`)
+    alert(`You submitted a new snippet called ${newSnippet.snippetName}`)
     setSnipName('')
     setSnippetBody('')
     //run an appllo cache function to reset the results of the 
 
   }
-
+//-------------------------------------------------------------------------------------
 
   return (
 
@@ -215,7 +227,7 @@ const Home = () => {
       <FolderContainer />
 
       {/* This is the container for the snippets  */}
-      <SnippetContainer  />
+      <SnippetContainer  allSnippets = {allSnippets} getSnipList = {getSnipList} />
 
 
       {/* This is the Text Area for snippets */}

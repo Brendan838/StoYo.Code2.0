@@ -1,13 +1,28 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import {Button, Box} from '@mui/material/';
 import AddIcon from '@mui/icons-material/Add';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-export default function SnippetContainer() {
-//   const [folder, setFolder] = React.useState('');
+import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
+import {useMutation, useQuery} from '@apollo/client';
 
-//   const handleChange = (event) => {
-//     setFolder(event.target.value);
-//   };
+
+export default function SnippetContainer({allSnippets, getSnipetLIst, refetch}) {
+
+
+
+
+// const { data } = useQuery(QUERY_SNIPPETS); 
+// const allSnippets = data?.snippets || [];
+// console.log(allSnippets)
+
+
+// function allSnippets(){
+// const { data } = useQuery(QUERY_SNIPPETS); 
+// const allSnippets = data?.snippets || [];
+// return allSnippets
+// }
+
+
 function thisWorked() {
 alert("this worked!")
 }
@@ -32,7 +47,25 @@ alert("this worked!")
 
 
 
-const listOfSnips = snippetArray.map((snippet)=> {
+
+
+
+  return (
+     
+
+
+
+
+
+
+
+<Box sx={{ bgcolor: 'gray', ml: 1, mr: 1, 
+              gridColumnStart: 3, 
+              gridColumnEnd: 5, 
+              gridRowStart: 8,
+              gridRowEnd: 24}} variant="filled">
+
+{allSnippets.map((snippet)=> {
 return (<Button
 sx={{ 
 bgcolor: 'black', 
@@ -45,26 +78,10 @@ startIcon = { <FolderOpenIcon/> }
 key = {snippet.id}
 onClick = {thisWorked}
 >
-{snippet.name}
+{snippet.snippetName}
 </Button>)
-});
-
-  return (
-     
-
-
-
-
-
-
-
-  <Box sx={{ bgcolor: 'gray', ml: 1, mr: 1, 
-              gridColumnStart: 3, 
-              gridColumnEnd: 5, 
-              gridRowStart: 8,
-              gridRowEnd: 24}} variant="filled">
-
-  {listOfSnips}
+})
+}
 
   </Box>
 

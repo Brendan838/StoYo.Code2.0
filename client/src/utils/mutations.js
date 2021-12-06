@@ -12,20 +12,14 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const ADD_FOLDER = gql`
-    mutation addFolder($folderName: String!) {
-        addFolder(folderName: $folderName) {
-            _id
-            folderName
-            folderAuthor
-            createdAt
-            snippets {
-                _id
-                snippetText
-            }
-        }
-    }
-`;
+// export const ADD_FOLDER = gql`
+//     mutation addFolder($folderName: String!) {
+//         addFolder(folderName: $folderName) {
+//             _id
+           
+//         }
+//     }
+// `;
 
 export const ADD_USER = gql`
   mutation addUser( $email: String!, $password: String!) {
@@ -39,17 +33,11 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_SNIPPET = gql`
-  mutation addsnippet($folderId: ID!, $snippetText: String!) {
-    addsnippet(thoughtId: $folderId, snippetText: $snippetText) {
+  mutation addSnippet($snippetText: String!, $snippetName: String!, $parentFolder: String) {
+    addSnippet(snippetText: $snippetText, snippetName: $snippetName, parentFolder: $parentFolder) {
       _id
-      folderName
-      folderAuthor
-      createdAt
-      snippets {
-        _id
-        snippetText
-        createdAt
-      }
+     snippetName
+   
     }
   }
 `;
