@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import {Button, Box, } from '@mui/material/';
+import {Button, Box, TextField } from '@mui/material/';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+
+
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {ADD_USER} from '../utils/mutations';
@@ -13,12 +16,13 @@ import {DELETE_FOLDER} from '../utils/mutations'
 export default function FolderContainer() {
 
 //Data to display folders
-const { data } = useQuery(QUERY_FOLDERS); 
+const { data, refetch } = useQuery(QUERY_FOLDERS); 
 const folderData = data?.folders || [];
 //function 
 const [deleteOneFolder] = useMutation(DELETE_FOLDER);
 
-
+const [showAddFolderUI, setShowAddFolderUI] = useState(false)
+const [folderName, setFolderName] = useState('')
 
 // const [mainDeleteButton, setMainDeleteButton] = useState(false)
 //function that will eventually help display the snippets in a given folder
@@ -46,6 +50,39 @@ alert(`${folderId} is being deleted`)
 
 
 }
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// function handleInput(e) {
+//   let nameFolder = e.target.name;
+  
+// if (name === 'folderName')
+//   switch (inputType) {
+//     case ('title'):
+//       setSnipName(inputValue);
+//       break;
+//     case ('body'):
+//       setSnippetBody(inputValue);
+//       break;
+//   }
+// }
+function createFolder(){
+
+const newFolder = {
+
+}
+
+alert("Folder Created!!!")
+setShowAddFolderUI(false)
+}
+
+
+
+
+
+
+
+
 
 
 //function that on click will make the x icons appear to delete folders
@@ -77,21 +114,78 @@ alert(`${folderId} is being deleted`)
   justifyContent: 'left',
   alignItems: 'center'
 }}>
+{/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
 
-    <Button variant="outlined" 
+
+
+{/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
+   
+
+{(showAddFolderUI === true) ? (
+<>
+<TextField
+sx={{
+  ml: 1,
+  mr: 1,
+  height: '50%',
+}}
+          id="standard-basic"
+          label="Folder Name"
+          name="title"
+          variant="standard"
+         
+          value={folderName} 
+/>
+<Button 
+sx={{
+display: 'flex',
+justifyContent: 'space-around',
+alignItems: 'center', 
+m: 1
+}} 
+variant="outlined" 
+onClick={createFolder}
+>
+<ArrowUpwardIcon/>
+</Button>
+
+<Button sx={{
+display: 'flex',
+justifyContent: 'space-around',
+alignItems: 'center', 
+m: 1
+}} 
+variant="outlined" 
+onClick={()=>{setShowAddFolderUI(false)}}
+>
+<ClearIcon/>
+</Button>
+</>) :
+(
+  <Button variant="outlined" 
     sx={{
     mr: 1
-    }}startIcon={<AddIcon />} >
+    }}startIcon={<AddIcon />} 
+    onClick = {()=>{setShowAddFolderUI(true)}}
+    >
     Folder
-    </Button>
+
+    </Button> 
+)}
+
+
+
+
+
 
     {/* <Button variant="outlined" onClick = {toggleDelete} >
     <DeleteForeverIcon />
-    </Button> */}
+    </Button>
 
-</Box>
+
 
 {/* Folder Container */}
+</Box>
 <Box 
 sx={{ 
 bgcolor: 'gray', 
