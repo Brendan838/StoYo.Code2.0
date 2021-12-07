@@ -120,18 +120,25 @@ const resolvers = {
 
     },
     deleteFolder: async (parent, { folderId }, context) => {
-      // if (context.user) {
+      if (context.user) {
+
+        const getFolderInfo = await Folder.findOne({_id: folderId})
+    
+        const parentFolderName = getFolderInfo.folderName
+        console.log(parentFolderName)
+        
+
         const folder = await Folder.findOneAndDelete({
           _id: folderId,
+
         });
 
-        // await User.findOneAndUpdate(
-        //   { _id: context.user._id },
-        //   { $pull: { folder: folder._id } }
-        // );
+      const deleteSnippets = await Snippet.remove({parentFolder: parentFolderName})
+      console.log(deleteSnippets)
 
-        return folder;
-      // }
+      return folder;
+      }
+      
       
 throw new AuthenticationError('You need to be logged in!');
     },

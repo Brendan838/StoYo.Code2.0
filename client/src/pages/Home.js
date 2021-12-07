@@ -10,7 +10,7 @@ import { Button, TextField, Box } from "@mui/material/";
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
+import PageviewIcon from '@mui/icons-material/Pageview';
 
 
 //Component Imports
@@ -41,10 +41,10 @@ const [folderDropDown, setFolderDropDown] = React.useState('');
 //-----------------------------------------------------------------
 //------------------------------------------------------------------
 //INFO PASSED DOWN TO SNIPPET CONTAINER IN ORDER TO DISPLAY SNIPPETS WHEN EDITOR IS UPDATED
-const { data, refetch } = useQuery(QUERY_SNIPPETS); 
+const { data, refetch} = useQuery(QUERY_SNIPPETS); 
 const allSnippets = data?.snippets || [];
 // console.log(allSnippets)
-
+// const [snipButtons, setSnipButtons] = useState(allSnippets)
 //logic for getting all snippets
 
 
@@ -194,8 +194,8 @@ refetch()
 
 
 
-        <Button variant="outlined" startIcon={<AddIcon />}>
-          Snippet
+        <Button variant="outlined" startIcon={<PageviewIcon/>} >
+          View All
         </Button>
 
       </Box>

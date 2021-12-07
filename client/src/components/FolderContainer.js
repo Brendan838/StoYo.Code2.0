@@ -17,6 +17,11 @@ export default function FolderContainer() {
 
 
 
+
+
+
+
+
 //Data to display folders
 const { data, refetch } = useQuery(QUERY_FOLDERS); 
 const folderData = data?.folders || [];
@@ -61,13 +66,16 @@ const {data} = await deleteOneFolder({ variables: deleteFolder });
 
 console.log(data)
   
-refetch()
+document.location.reload();
 }
 
 
 
 async function createFolder(){
-console.log(folderName)
+if (folderName.length < 3){
+alert("Please enter a name at least 3 characters long")
+return
+}
 
 const newFolder = {
 folderName: folderName
@@ -77,6 +85,7 @@ const {data} = await createNewFolder({variables: newFolder})
 console.log(data)
 refetch();
 setShowAddFolderUI(false)
+setFolderName('')
 }
 
 
