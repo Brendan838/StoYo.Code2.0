@@ -8,24 +8,32 @@ const resolvers = {
       return User.find().populate('folders');
     },
     user: async (parent, { email }) => {
-      return User.findOne({ email }).populate('folders');
+      return User.findOne({ email }).populate('folder');
     },
     // resolve folders
-    folders: async (parent, { email }) => {
-      const params = email ? { email } : {};
-      return Folder.find(params).populate('snippets');
+    folders: async (parent, args, context) => {
+      // const params = email ? { email } : {};
+      // return Folder.find(params).populate('snippets');
+    if (context.user) {
+        const folderInfo = await Folder.find({ folderAuthor: context.user.email })
+        console.log(folderInfo)
+        return folderInfo;
+      }
+      throw new AuthenticationError("You need to be logged in!");
+
     },
     folder: async (parent, { folderId }) => {
       return Folder.findOne({ _id: folderId }).populate('snippets');
+
     },
     // resolve snippets
-    snippets: async (parent, { email }) => {
-      const params = email ? { email } : {};
-      return Snippet.find(params).sort({ createdAt: -1 });
+    snippets: async (parent, args, context) => {
+      const getSnips = Snippet.find({snippetAuthor: context.user.email})
+      return getSnips
     },
-    snippet: async (parent, { snippetId }) => {
-      return Snippet.findOne({ _id: snippetId });
-    },
+    // snippet: async (parent, { snippetId }) => {
+    //   return Snippet.findOne({ _id: snippetId });
+    // },
     // What does me do?
     me: async (parent, args, context) => {
       console.log("context", context)
@@ -61,7 +69,7 @@ const resolvers = {
       return { token, user };
     },
 
-    addFolder: async (parent, { folderName }, context) => {
+    addFolder: async (parent, { folderName, folderAuthor }, context) => {
       if (context.user) {
         const folder = await Folder.create({
           folderName,
@@ -75,40 +83,54 @@ const resolvers = {
 
         return Folder;
       }
-      throw new AuthenticationError('You need to be logged in!');
-    },
-    addSnippet: async (parent, { createdAt, snippetText }, context) => {
-      if (context.user) {
-        return Snippet.findOneAndUpdate(
-          { _id: context.snippetId },
-          {
-            $addToSet: {
-              comments: { snippetText, createdAt },
-            },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw new AuthenticationError('You need to be logged in!');
-    },
-    removeFolder: async (parent, { folderId }, context) => {
-      if (context.user) {
-        const folder = await Folder.findOneAndDelete({
-          _id: folderId,
-          folderAuthor: context.user.email,
+
+      else {
+        const folder = await Folder.create({
+          folderName, 
+          folderAuthor, 
         });
 
         await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { folder: folder._id } }
+          { email: folderAuthor},
+          { $addToSet: { folder } }
         );
 
-        return folder;
+        return Folder;
+
+      }
+      // throw new AuthenticationError('You need to be logged in!');
+    },
+    addSnippet: async (parent, { snippetName, snippetText, parentFolder }, context) => {
+      if (context.user) {
+
+        const newSnip = await Snippet.create(
+         {
+          snippetAuthor: context.user.email,
+          snippetName,
+          snippetText,
+          parentFolder,
+
+         
+          });
+      return newSnip
       }
       throw new AuthenticationError('You need to be logged in!');
+    },
+    deleteFolder: async (parent, { folderId }, context) => {
+      // if (context.user) {
+        const folder = await Folder.findOneAndDelete({
+          _id: folderId,
+        });
+
+        // await User.findOneAndUpdate(
+        //   { _id: context.user._id },
+        //   { $pull: { folder: folder._id } }
+        // );
+
+        return folder;
+      // }
+      
+throw new AuthenticationError('You need to be logged in!');
     },
     removeSnippet: async (parent, { folderId, snippetId }, context) => {
       if (context.user) {

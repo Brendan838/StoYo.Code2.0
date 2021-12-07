@@ -12,20 +12,21 @@ const snippetSchema = new Schema({
     maxlength: 280,
     trim: true,
   },
-  snippetId: {
-    type: Number,
-    required: true
+  parentFolder: {
+    type: String,
+    trim: true
+  },
+  snippetName: {
+      type: String,
+      required: true,
+      trim: true
   },
   snippetAuthor: {
-    type: String,
-    required: true,
-    trim: true,
+      type: String,
+      required: true,
+      trim: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: (timestamp) => dateFormat(timestamp),
-  },
+ 
 });
 
 const Snippet = model('Snippet', snippetSchema);

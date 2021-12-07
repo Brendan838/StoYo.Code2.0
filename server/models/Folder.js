@@ -13,14 +13,15 @@ const folderSchema = new Schema({
       required: true,
       trim: true
   },
-  snippet: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Snippet',
-    },
-  ],
+  // snippet: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Snippet',
+  //   },
+  // ],
 })
 
 const Folder = model('Folder', folderSchema);
 
 module.exports = Folder;
+

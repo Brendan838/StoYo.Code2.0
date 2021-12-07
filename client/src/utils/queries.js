@@ -15,12 +15,13 @@ export const QUERY_USER = gql`
   }
 `;
 export const QUERY_SNIPPETS = gql`
-  query getSnippets {
+  query getSnippets{
     snippets {
       _id
       snippetName
       snippetText
-      createdAt
+      parentFolder
+      
     }
   }
 `;
@@ -35,7 +36,7 @@ export const QUERY_SINGLE_SNIPPET = gql`
   }
 `;
 export const QUERY_FOLDERS = gql`
-  query getFolders {
+  query folders {
     folders {
       _id
       folderName
@@ -61,24 +62,3 @@ export const QUERY_SINGLE_FOLDER = gql`
 
 
 
-export const QUERY_ME = gql`
-  query me {
-    me {
-      _id
-      username
-      email
-      snippets {
-        _id
-        snippetName
-        snippetText
-        createdAt
-      }
-      folders {
-          _id
-          folderName
-          folderAuthor
-
-      }
-    }
-  }
-`;
