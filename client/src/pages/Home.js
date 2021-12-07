@@ -127,14 +127,16 @@ else {
 async function deleteSingleSnippet() {
 if (activeSnip !== null) {
 console.log(activeSnip)
-const _id = activeSnip
+const deletedSnip = {
+  _id: activeSnip
+}
 
-const {data} = await deleteSnippet({variables: _id})
+const {data} = await deleteSnippet({variables: deletedSnip})
 console.log(data)
-// setSnipName('')
-// setSnippetBody('')
-// setActiveSnip(null)
-// refetch()
+setSnipName('')
+setSnippetBody('')
+setActiveSnip(null)
+refetch()
 }
 
 }
