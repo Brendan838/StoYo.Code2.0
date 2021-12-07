@@ -12,6 +12,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 
+
 //Component Imports
 import FolderSearch from '../components/FolderSearch'
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
@@ -130,10 +131,10 @@ const _id = activeSnip
 
 const {data} = await deleteSnippet({variables: _id})
 console.log(data)
-setSnipName('')
-setSnippetBody('')
-setActiveSnip(null)
-refetch()
+// setSnipName('')
+// setSnippetBody('')
+// setActiveSnip(null)
+// refetch()
 }
 
 }
