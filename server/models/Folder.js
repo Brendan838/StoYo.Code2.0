@@ -13,7 +13,7 @@ const folderSchema = new Schema({
       required: true,
       trim: true
   },
-  // snippet: [
+  // snippets [
   //   {
   //     type: Schema.Types.ObjectId,
   //     ref: 'Snippet',

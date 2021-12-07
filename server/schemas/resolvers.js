@@ -73,37 +73,22 @@ const resolvers = {
       return { token, user };
     },
 
-    addFolder: async (parent, { folderName, folderAuthor }, context) => {
+    addFolder: async (parent, { folderName }, context) => {
       if (context.user) {
         const folder = await Folder.create({
-          folderName,
-          folderAuthor: context.user.email,
-        });
-
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { folder: folder._id } }
-        );
-
-        return Folder;
-      }
-
-      else {
-        const folder = await Folder.create({
           folderName, 
-          folderAuthor, 
+          folderAuthor: context.user.email
+        
         });
 
-        await User.findOneAndUpdate(
-          { email: folderAuthor},
-          { $addToSet: { folder } }
-        );
-
-        return Folder;
-
+        return folder;
       }
-      // throw new AuthenticationError('You need to be logged in!');
-    },
+
+     
+      throw new AuthenticationError('You need to be logged in!');
+      }
+      
+    ,
     addSnippet: async (parent, { snippetName, snippetText, parentFolder }, context) => {
       if (context.user) {
 
@@ -135,18 +120,25 @@ const resolvers = {
 
     },
     deleteFolder: async (parent, { folderId }, context) => {
-      // if (context.user) {
+      if (context.user) {
+
+        const getFolderInfo = await Folder.findOne({_id: folderId})
+    
+        const parentFolderName = getFolderInfo.folderName
+        console.log(parentFolderName)
+        
+
         const folder = await Folder.findOneAndDelete({
           _id: folderId,
+
         });
 
-        // await User.findOneAndUpdate(
-        //   { _id: context.user._id },
-        //   { $pull: { folder: folder._id } }
-        // );
+      const deleteSnippets = await Snippet.remove({parentFolder: parentFolderName})
+      console.log(deleteSnippets)
 
-        return folder;
-      // }
+      return folder;
+      }
+      
       
 throw new AuthenticationError('You need to be logged in!');
     },

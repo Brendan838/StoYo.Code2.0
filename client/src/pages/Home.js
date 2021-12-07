@@ -10,7 +10,7 @@ import { Button, TextField, Box } from "@mui/material/";
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
+import PageviewIcon from '@mui/icons-material/Pageview';
 
 
 //Component Imports
@@ -29,6 +29,8 @@ import { ADD_SNIPPET,UPDATE_SNIPPET,DELETE_FOLDER, DELETE_SNIPPET } from "../uti
 
 
 const Home = () => {
+
+const [folderDropDown, setFolderDropDown] = React.useState('');
 //-----------------------------------------------------------------
 //------------------------------------------------------------------
 
@@ -39,10 +41,10 @@ const Home = () => {
 //-----------------------------------------------------------------
 //------------------------------------------------------------------
 //INFO PASSED DOWN TO SNIPPET CONTAINER IN ORDER TO DISPLAY SNIPPETS WHEN EDITOR IS UPDATED
-const { data, refetch } = useQuery(QUERY_SNIPPETS); 
+const { data, refetch} = useQuery(QUERY_SNIPPETS); 
 const allSnippets = data?.snippets || [];
 // console.log(allSnippets)
-
+// const [snipButtons, setSnipButtons] = useState(allSnippets)
 //logic for getting all snippets
 
 
@@ -78,7 +80,7 @@ if (activeSnip !== null){
   _id: activeSnip,
   snippetName: snipName,
   snippetText: snippetBody,
-  parentFolder: "All Snips"
+  parentFolder: folderDropDown
   }
 
   const {data} = await updateSnippet({ variables: updatedSnippet });
@@ -96,7 +98,7 @@ else {
   const newSnippet = {
     snippetName: snipName,
     snippetText: snippetBody,
-    parentFolder: "All Snips"
+    parentFolder: folderDropDown
   }
 
   try {
@@ -192,8 +194,8 @@ refetch()
 
 
 
-        <Button variant="outlined" startIcon={<AddIcon />}>
-          Snippet
+        <Button variant="outlined" startIcon={<PageviewIcon/>} >
+          View All
         </Button>
 
       </Box>
@@ -233,7 +235,7 @@ refetch()
         gridRowEnd: 7
       }}>
 
-        <FolderSearch />
+        <FolderSearch folderDropDown = {folderDropDown} setFolderDropDown = {setFolderDropDown}/>
       </Box>
 
       {/* This box contains the save, delete, and color buttons field */}
@@ -309,6 +311,7 @@ onClick = {()=>{
 setSnipName(snippet.snippetName)
 setSnippetBody(snippet.snippetText)
 setActiveSnip(snippet._id)
+setFolderDropDown(snippet.parentFolder)
 
 }}
 >
