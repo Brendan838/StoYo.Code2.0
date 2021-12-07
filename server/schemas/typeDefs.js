@@ -42,8 +42,9 @@ const typeDefs = gql`
     addUser( email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     addSnippet(snippetText: String!, snippetName: String!, parentFolder: String): Snippet
+    updateSnippet(_id: ID!, snippetText: String!, snippetName: String!, parentFolder: String): Snippet
     addFolder(folderAuthor: String!, folderName: String!): Folder
-    removeSnippet(snippetId: ID!): Snippet
+    deleteSnippet(_id: ID!): Snippet
     deleteFolder(folderId: ID!): Folder
   }
 `
