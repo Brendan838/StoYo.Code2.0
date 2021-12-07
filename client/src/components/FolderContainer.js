@@ -11,9 +11,11 @@ import ClearIcon from '@mui/icons-material/Clear';
 import {useMutation, useQuery} from '@apollo/client';
 import { getDataFromTree } from '@apollo/client/react/ssr';
 import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
-import {DELETE_FOLDER} from '../utils/mutations'
+import {DELETE_FOLDER, ADD_FOLDER} from '../utils/mutations'
 
 export default function FolderContainer() {
+
+
 
 //Data to display folders
 const { data, refetch } = useQuery(QUERY_FOLDERS); 
@@ -24,55 +26,56 @@ const [deleteOneFolder] = useMutation(DELETE_FOLDER);
 const [showAddFolderUI, setShowAddFolderUI] = useState(false)
 const [folderName, setFolderName] = useState('')
 
+
+const [createNewFolder] = useMutation(ADD_FOLDER)
+
+function handleInput(e) {
+  
+setFolderName(e.target.value)
+
+}
+
+
 // const [mainDeleteButton, setMainDeleteButton] = useState(false)
 //function that will eventually help display the snippets in a given folder
 function showSnips() {
 alert('showing snippets!')
+
+
 }
+
+
+
+
+
+
+
 
 async function deleteFolder(folderId) {
 
-console.log(folderId)
-alert(`${folderId} is being deleted`)
-  try {
-      //const response = await createUser(userFormData);
-      //set up useMutation hook
-      const {data }= await deleteOneFolder({ variables: folderId });
-      }
+const deleteFolder = {
+folderId: folderId
+}
 
-      //pass in token recevied from mutation response
-     
-    catch (err) {
-      console.error(err);
-     
-    }
+const {data} = await deleteOneFolder({ variables: deleteFolder });
 
-
-
+console.log(data)
+  
+refetch()
 }
 
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// function handleInput(e) {
-//   let nameFolder = e.target.name;
-  
-// if (name === 'folderName')
-//   switch (inputType) {
-//     case ('title'):
-//       setSnipName(inputValue);
-//       break;
-//     case ('body'):
-//       setSnippetBody(inputValue);
-//       break;
-//   }
-// }
-function createFolder(){
+
+async function createFolder(){
+console.log(folderName)
 
 const newFolder = {
-
+folderName: folderName
 }
 
-alert("Folder Created!!!")
+const {data} = await createNewFolder({variables: newFolder})
+console.log(data)
+refetch();
 setShowAddFolderUI(false)
 }
 
@@ -133,7 +136,7 @@ sx={{
           label="Folder Name"
           name="title"
           variant="standard"
-         
+          onChange={handleInput}
           value={folderName} 
 />
 <Button 

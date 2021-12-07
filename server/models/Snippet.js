@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const dateFormat = require('../utils/dateFormat');
 
 // Do we need the createdAt object?
 //Do we want to keep the comment option?

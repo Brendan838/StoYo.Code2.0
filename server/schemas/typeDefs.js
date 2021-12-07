@@ -26,7 +26,7 @@ const typeDefs = gql`
   type Folder {
     _id: ID
     folderName: String
-    snippets: [Snippet]
+    # snippets: [Snippet]
     folderAuthor: String
   }
   
@@ -43,7 +43,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     addSnippet(snippetText: String!, snippetName: String!, parentFolder: String): Snippet
     updateSnippet(_id: ID!, snippetText: String!, snippetName: String!, parentFolder: String): Snippet
-    addFolder(folderAuthor: String!, folderName: String!): Folder
+    addFolder(folderName: String!): Folder
     deleteSnippet(_id: ID!): Snippet
     deleteFolder(folderId: ID!): Folder
   }

@@ -12,14 +12,14 @@ export const LOGIN_USER = gql`
   }
 `;
 
-// export const ADD_FOLDER = gql`
-//     mutation addFolder($folderName: String!) {
-//         addFolder(folderName: $folderName) {
-//             _id
+export const ADD_FOLDER = gql`
+    mutation addFolder($folderName: String!) {
+        addFolder(folderName: $folderName) {
+        _id
            
-//         }
-//     }
-// `;
+        }
+    }
+`;
 
 export const ADD_USER = gql`
   mutation addUser( $email: String!, $password: String!) {

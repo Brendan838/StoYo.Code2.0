@@ -29,6 +29,8 @@ import { ADD_SNIPPET,UPDATE_SNIPPET,DELETE_FOLDER, DELETE_SNIPPET } from "../uti
 
 
 const Home = () => {
+
+const [folderDropDown, setFolderDropDown] = React.useState('');
 //-----------------------------------------------------------------
 //------------------------------------------------------------------
 
@@ -78,7 +80,7 @@ if (activeSnip !== null){
   _id: activeSnip,
   snippetName: snipName,
   snippetText: snippetBody,
-  parentFolder: "All Snips"
+  parentFolder: folderDropDown
   }
 
   const {data} = await updateSnippet({ variables: updatedSnippet });
@@ -96,7 +98,7 @@ else {
   const newSnippet = {
     snippetName: snipName,
     snippetText: snippetBody,
-    parentFolder: "All Snips"
+    parentFolder: folderDropDown
   }
 
   try {
@@ -233,7 +235,7 @@ refetch()
         gridRowEnd: 7
       }}>
 
-        <FolderSearch />
+        <FolderSearch folderDropDown = {folderDropDown} setFolderDropDown = {setFolderDropDown}/>
       </Box>
 
       {/* This box contains the save, delete, and color buttons field */}
@@ -309,6 +311,7 @@ onClick = {()=>{
 setSnipName(snippet.snippetName)
 setSnippetBody(snippet.snippetText)
 setActiveSnip(snippet._id)
+setFolderDropDown(snippet.parentFolder)
 
 }}
 >

@@ -5,8 +5,8 @@ import {
   // Redirect,
   Switch,
 } from "react-router-dom";
-
-
+import { ApolloLink } from 'apollo-link';
+import { onError } from 'apollo-link-error';
 import "./App.css";
 //import S3 from 'react-aws-s3';
 import {Box} from "@mui/material/";
@@ -20,6 +20,7 @@ import SignUp from './pages/SignUp'
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 const App = () => {
+
 
 
 const client = new ApolloClient({
