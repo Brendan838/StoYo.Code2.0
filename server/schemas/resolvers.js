@@ -28,8 +28,12 @@ const resolvers = {
     },
     // resolve snippets
     snippets: async (parent, args, context) => {
+
+     
       const getSnips = Snippet.find({snippetAuthor: context.user.email})
       return getSnips
+      
+      
     },
     // snippet: async (parent, { snippetId }) => {
     //   return Snippet.findOne({ _id: snippetId });
@@ -115,6 +119,20 @@ const resolvers = {
       return newSnip
       }
       throw new AuthenticationError('You need to be logged in!');
+
+    },
+    updateSnippet: async (parent, { _id, snippetName, snippetText, parentFolder }, context) => {
+      if (context.user) {
+        const updatedSnip = await Snippet.findOneAndUpdate({_id: _id},
+         {
+          snippetName,
+          snippetText,
+          parentFolder,
+          });
+      return updatedSnip
+      }
+      throw new AuthenticationError('You need to be logged in!');
+
     },
     deleteFolder: async (parent, { folderId }, context) => {
       // if (context.user) {
@@ -132,23 +150,23 @@ const resolvers = {
       
 throw new AuthenticationError('You need to be logged in!');
     },
-    removeSnippet: async (parent, { folderId, snippetId }, context) => {
-      if (context.user) {
-        return Folder.findOneAndUpdate(
-          { _id: folderId },
-          {
-            $pull: {
-              snippets: {
-                _id: snippetId,
-              },
-            },
-          },
-          { new: true }
-        );
-      }
-      throw new AuthenticationError('You need to be logged in!');
-    },
-  },
-};
+    deleteSnippet: async (parent, { _id }, context) => {
+      // if (context.user) {
 
+
+      await Snippet.remove({_id: _id});
+      
+      return _id
+    // 
+    // }
+
+    // throw new AuthenticationError('You need to be logged in!');
+  }
+
+
+  }
+
+
+
+}
 module.exports = resolvers;

@@ -17,7 +17,7 @@ export default function NavBar() {
     setAnchorEl(null);
   };
 
-const handleLogout = () => {
+  const handleLogout = () => {
     Auth.logout()
     setAnchorEl(null);
   };

@@ -61,7 +61,7 @@ export const DELETE_FOLDER = gql`
 `;
 
 export const DELETE_SNIPPET = gql`
-  mutation deleteSnippet($_id: ID) {
+  mutation deleteSnippet($_id: ID!) {
     deleteSnippet(_id: $_id) {
       _id
     }
