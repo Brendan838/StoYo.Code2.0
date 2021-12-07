@@ -15,7 +15,7 @@ export const QUERY_USER = gql`
   }
 `;
 export const QUERY_SNIPPETS = gql`
-  query getSnippets {
+  query getSnippets{
     snippets {
       _id
       snippetName

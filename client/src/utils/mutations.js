@@ -42,9 +42,27 @@ export const ADD_SNIPPET = gql`
   }
 `;
 
+export const UPDATE_SNIPPET = gql`
+  mutation updateSnippet($_id: ID!, $snippetText: String!, $snippetName: String!, $parentFolder: String) {
+    updateSnippet(_id: $_id, snippetText: $snippetText, snippetName: $snippetName, parentFolder: $parentFolder) {
+      _id
+     snippetName
+   
+    }
+  }
+`;
+
 export const DELETE_FOLDER = gql`
   mutation deleteFolder($folderId: ID!) {
     deleteFolder(folderId: $folderId) {
+      _id
+    }
+  }
+`;
+
+export const DELETE_SNIPPET = gql`
+  mutation deleteSnippet($_id: ID) {
+    deleteSnippet(_id: $_id) {
       _id
     }
   }

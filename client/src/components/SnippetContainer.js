@@ -6,7 +6,7 @@ import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_
 import {useMutation, useQuery} from '@apollo/client';
 
 
-export default function SnippetContainer({allSnippets, getSnipetLIst, refetch}) {
+export default function SnippetContainer({allSnippets, displaySingleSnippet}) {
 
 
 
@@ -75,8 +75,8 @@ width:'90%'
 variant="contained" 
 color="success" 
 startIcon = { <FolderOpenIcon/> }
-key = {snippet.id}
-onClick = {thisWorked}
+key = {snippet._id}
+onClick = {displaySingleSnippet(snippet._id)}
 >
 {snippet.snippetName}
 </Button>)

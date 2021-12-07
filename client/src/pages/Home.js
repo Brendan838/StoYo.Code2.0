@@ -1,31 +1,26 @@
-import React, { useState, useEffect, fetchData } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  // Redirect,
-  Switch,
-} from "react-router-dom";
-import Auth from '../utils/auth';
+import React, { useState } from "react";
 
+//ApolloImports
 import {useMutation, useQuery} from '@apollo/client';
 import "../App.css";
 //import S3 from 'react-aws-s3';
 import { Button, TextField, Box } from "@mui/material/";
 
-
+//MaterialUI Icons
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+
 //Component Imports
 import FolderSearch from '../components/FolderSearch'
-
-import SnipEditor from '../components/SnipEditor'
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import ColorDropDown from '../components/ColorDropDown'
-import SnippetContainer from '../components/SnippetContainer'
 import FolderContainer from '../components/FolderContainer'
+
+//Utils Imports
 import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
-import { ADD_SNIPPET } from "../utils/mutations";
+import { ADD_SNIPPET,UPDATE_SNIPPET,DELETE_FOLDER, DELETE_SNIPPET } from "../utils/mutations";
 
 
 
@@ -33,79 +28,142 @@ import { ADD_SNIPPET } from "../utils/mutations";
 
 
 const Home = () => {
+//-----------------------------------------------------------------
+//------------------------------------------------------------------
 
 
 
 
+
+//-----------------------------------------------------------------
+//------------------------------------------------------------------
+//INFO PASSED DOWN TO SNIPPET CONTAINER IN ORDER TO DISPLAY SNIPPETS WHEN EDITOR IS UPDATED
 const { data, refetch } = useQuery(QUERY_SNIPPETS); 
 const allSnippets = data?.snippets || [];
 // console.log(allSnippets)
-const [snipList,getSnipList] = useState(allSnippets)
+
 //logic for getting all snippets
 
 
-
-
-
-
-
-//Logic for saving a snippet
+//snippet mustations and useState variables
+const [updateSnippet] = useMutation(UPDATE_SNIPPET);
 const [addSnippet] = useMutation(ADD_SNIPPET);
+const [snipName, setSnipName] = useState('')
+const [snippetBody, setSnippetBody] = useState('')
+const [activeSnip, setActiveSnip] = useState(null)
+const [deleteSnippet] = useMutation(DELETE_SNIPPET);
 
+//function allowing textfields to work with our useState
+function handleInput(e) {
+  let inputType = e.target.name;
+  let inputValue = e.target.value;
 
-
-
-  const [snipName, setSnipName] = useState('')
-  const [snippetBody, setSnippetBody] = useState('')
-
-
-
-  function handleInput(e) {
-    let inputType = e.target.name;
-    let inputValue = e.target.value;
-
-    switch (inputType) {
-      case ('title'):
-        setSnipName(inputValue);
-        break;
-      case ('body'):
-        setSnippetBody(inputValue);
-        break;
-    }
+  switch (inputType) {
+    case ('title'):
+      setSnipName(inputValue);
+      break;
+    case ('body'):
+      setSnippetBody(inputValue);
+      break;
   }
-
-  const saveSnippet = async function () {
-    //This is where we need to save snippet name and title
-    //declare new object that will be sent via useMutation
-
-    const newSnippet = {
-      snippetName: snipName,
-      snippetText: snippetBody,
-      parentFolder: "All Snips"
-
-
-    }
-    try {
-console.log(newSnippet)
-    const {data} = await addSnippet({ variables: newSnippet,  pollInterval: 500  });
-    console.log(data)
- const userData = data?.addSnippet || {};
-
-  console.log(userData)
-
-refetch()
-
-    }
-catch{
-console.log("error submitting snippet!")
 }
-    //instead of alert- we can use async and await and a utils function to send this data to data base.
-    alert(`You submitted a new snippet called ${newSnippet.snippetName}`)
-    setSnipName('')
-    setSnippetBody('')
-    //run an appllo cache function to reset the results of the 
+
+// This function will either save or update a function depending on whether "activeSnip" has a snip ID in it. It gets a snipID if a snip folder is clicked on.
+const saveSnippet = async function () {
+ 
+if (activeSnip !== null){
+
+  const updatedSnippet = {
+  _id: activeSnip,
+  snippetName: snipName,
+  snippetText: snippetBody,
+  parentFolder: "All Snips"
+  }
+
+  const {data} = await updateSnippet({ variables: updatedSnippet });
+
+  //refetch is from the snippet query, it is a function that will refresh the data
+  refetch()
+  setSnipName('')
+  setSnippetBody('')
+  setActiveSnip(null)
+
+
+}
+else {
+
+  const newSnippet = {
+    snippetName: snipName,
+    snippetText: snippetBody,
+    parentFolder: "All Snips"
+  }
+
+  try {
+  // console.log(newSnippet)
+  const {data} = await addSnippet({ variables: newSnippet });
+  // console.log(data)
+  const userData = data?.addSnippet || {};
+
+  // console.log(userData)
+
+  //refetch is from line 40- allows us to have the snippet container update display when a new snippet is submitted
+  refetch()
 
   }
+  catch {
+  console.log("error submitting snippet!")
+  }
+  // alert(`You submitted a new snippet called ${newSnippet.snippetName}`)
+  setSnipName('')
+  setSnippetBody('')
+
+}
+}
+
+//-------------------------------------------------------------------------------------
+//Snippet Delete Logic
+
+async function deleteSingleSnippet() {
+if (activeSnip !== null) {
+console.log(activeSnip)
+const _id = activeSnip
+
+const {data} = await deleteSnippet({variables: _id})
+console.log(data)
+setSnipName('')
+setSnippetBody('')
+setActiveSnip(null)
+refetch()
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------
 
   return (
@@ -113,23 +171,8 @@ console.log("error submitting snippet!")
 
 
     <>
-      {/* Folder Buttons Area*/}
-      {/* <Box sx={{
-        bgcolor: 'white', ml: 1, mr: 1,
-        gridColumnStart: 1,
-        gridColumnEnd: 3,
-        gridRowStart: 7,
-        gridRowEnd: 7,
-        display: 'flex',
-        justifyContent: 'left',
-        alignItems: 'center'
-      }}>
-
-
-        <Button variant="outlined" startIcon={<AddIcon />}>
-          Folder
-        </Button>
-      </Box> */}
+     
+   
 
       {/* Add snippet/Snippet Buttons Area  */}
       <Box sx={{
@@ -215,7 +258,8 @@ console.log("error submitting snippet!")
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center', mr: 1
-        }} variant="outlined" >
+        }} variant="outlined" 
+o         onClick={deleteSingleSnippet} >
           <DeleteForeverIcon />
         </Button>
 
@@ -224,10 +268,53 @@ console.log("error submitting snippet!")
       </Box>
 
       {/* This is the container for the snippet folders  */}
-      <FolderContainer />
+      
+
+
+
+<FolderContainer/>
+
+
+
+
+
+
+
+
+
+
 
       {/* This is the container for the snippets  */}
-      <SnippetContainer  allSnippets = {allSnippets} getSnipList = {getSnipList} />
+      <Box sx={{ bgcolor: 'gray', ml: 1, mr: 1, 
+              gridColumnStart: 3, 
+              gridColumnEnd: 5, 
+              gridRowStart: 8,
+              gridRowEnd: 24}} variant="filled">
+
+{allSnippets.map((snippet)=> {
+return (<Button
+sx={{ 
+bgcolor: 'black', 
+m: 1, 
+width:'90%'
+}} 
+variant="contained" 
+color="success" 
+startIcon = { <FolderOpenIcon/> }
+key = {snippet._id}
+onClick = {()=>{ 
+setSnipName(snippet.snippetName)
+setSnippetBody(snippet.snippetText)
+setActiveSnip(snippet._id)
+
+}}
+>
+{snippet.snippetName}
+</Button>)
+})
+}
+
+  </Box>
 
 
       {/* This is the Text Area for snippets */}
@@ -254,33 +341,6 @@ console.log("error submitting snippet!")
 
 
       </Box>
-
-
-
-
-
-
-
-
-
-
-
-
-      {/* <TextField
-          sx={{ 
-
-
- bgcolor: 'gray'}} gridColumn ='span 6' gridRow ='span 2'
-          id="standard-multiline-static"
-          label="Code"
-          multiline
-          block
-          defaultValue="//New Snip!"
-          variant="standard"/> */}
-
-
-
-      {/* <Button sx={{ gridArea: 'Button'}}>Hello!</Button> */}
     </>
 
 
