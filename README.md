@@ -1,18 +1,13 @@
 # StoYoCode
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-*Link*
+[Here is the link to the deployed site.](https://stoyocode2.herokuapp.com/)
 
 ## Description 
 As a developer, there are many times when we just need to copy and paste code that we use consistantly. Our web app creates an environment to organize and store the needed code. Save time and frustration searching through notebooks by saving your code directly into a folder you created!
 
 ## Demo 
-
-***
-![demo_still]
-![demo_still]
-![demo_still]
-
+![screenshot](./assets//screenShot.png)
 
 ## Table of Contents
 * [Technologies used](#technologies-used)
