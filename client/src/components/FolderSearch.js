@@ -12,24 +12,29 @@ export default function FolderSelect({folderDropDown, setFolderDropDown}) {
   const folderData = data?.folders || [];
 
 
-  
+    // const [age, setAge] = React.useState('');
 
   const handleChange = (event) => {
     setFolderDropDown(event.target.value);
   };
 
 
-return (
 
-     <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Select </InputLabel>
+
+
+return (
+ <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="demo-simple-select-standard-label">Folder</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          labelId="demo-simple-select-standard-label"
+          id="demo-simple-select-standard"
           value={folderDropDown}
-          label="Folder"
           onChange={handleChange}
+          label="Folder"
         >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
 
 
 {folderData.map((folder)=>{
@@ -41,10 +46,34 @@ return (
 
 })
 }
-
- </Select>
-      </FormControl>
-
+    </Select></FormControl>
 
 )
+
 }
+//      <FormControl sc={{backgroundColor: "red"}}fullWidth>
+//         <InputLabel id="demo-simple-select-label">Select </InputLabel>
+//         <Select
+//           labelId="demo-simple-select-label"
+//           id="demo-simple-select"
+//           value={folderDropDown}
+//           label="Folder"
+//           onChange={handleChange}
+
+//         >
+         
+
+// {folderData.map((folder)=>{
+
+
+// return (
+//           <MenuItem value={folder.folderName} key={folder._id}>{folder.folderName}</MenuItem>       
+//   );
+
+// })
+// }
+
+//  </Select>
+//       </FormControl>
+
+

@@ -13,7 +13,7 @@ import { getDataFromTree } from '@apollo/client/react/ssr';
 import { QUERY_USER, QUERY_SNIPPETS, QUERY_SINGLE_SNIPPET, QUERY_FOLDERS, QUERY_SINGLE_FOLDER, QUERY_ME } from "../utils/queries";
 import {DELETE_FOLDER, ADD_FOLDER} from '../utils/mutations'
 
-export default function FolderContainer() {
+export default function FolderContainer({setCurrentlySelectedFolder}) {
 
 
 
@@ -48,6 +48,7 @@ alert('showing snippets!')
 
 
 }
+
 
 
 
@@ -230,7 +231,10 @@ e.stopPropagation()
 deleteFolder(folder._id)}}/>}
   
   key= {folder._id}
-  onClick = {showSnips}
+  onClick = {()=>{
+setCurrentlySelectedFolder(folder.folderName)
+
+  }}
   >
   {folder.folderName}
 

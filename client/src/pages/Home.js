@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PageviewIcon from '@mui/icons-material/Pageview';
-
+import Fab from '@mui/material/Fab';
 
 //Component Imports
 import FolderSearch from '../components/FolderSearch'
@@ -30,7 +30,7 @@ import { ADD_SNIPPET,UPDATE_SNIPPET,DELETE_FOLDER, DELETE_SNIPPET } from "../uti
 
 const Home = () => {
 
-const [folderDropDown, setFolderDropDown] = React.useState('');
+const [folderDropDown, setFolderDropDown] = useState('');
 //-----------------------------------------------------------------
 //------------------------------------------------------------------
 
@@ -47,6 +47,23 @@ const allSnippets = data?.snippets || [];
 // const [snipButtons, setSnipButtons] = useState(allSnippets)
 //logic for getting all snippets
 
+const [currentlySelectedFolder, setCurrentlySelectedFolder] = useState("")
+
+function showRelevantSnippets(){
+if (currentlySelectedFolder == allSnippets) {
+
+return allSnippets
+}
+
+else {
+refetch()
+const snippets = allSnippets.filter(snippet => 
+snippet.parentFolder === currentlySelectedFolder
+);
+
+return snippets
+}
+}
 
 //snippet mustations and useState variables
 const [updateSnippet] = useMutation(UPDATE_SNIPPET);
@@ -90,6 +107,7 @@ if (activeSnip !== null){
   setSnipName('')
   setSnippetBody('')
   setActiveSnip(null)
+  setFolderDropDown('')
 
 
 }
@@ -138,7 +156,9 @@ console.log(data)
 setSnipName('')
 setSnippetBody('')
 setActiveSnip(null)
-refetch()
+setFolderDropDown("")
+showRelevantSnippets(currentlySelectedFolder)
+
 }
 
 }
@@ -170,76 +190,131 @@ refetch()
 
 //-------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------
+//Overall return for home page
+return (
 
-  return (
-
-
-
-    <>
+<>
      
-   
 
-      {/* Add snippet/Snippet Buttons Area  */}
-      <Box sx={{
-        bgcolor: 'white', ml: 1, mr: 1,
-        gridColumnStart: 3,
-        gridColumnEnd: 5,
-        gridRowStart: 7,
-        gridRowEnd: 7,
-        display: 'flex',
-        justifyContent: 'left',
-        alignItems: 'center'
-      }}>
+<FolderContainer setCurrentlySelectedFolder = {setCurrentlySelectedFolder}/>
+
+{/* !!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!*/}
+{/* Buttons above Snippet Container  */}
+<Box sx={{
+  bgcolor: 'white', ml: 1, mr: 1,
+  gridColumnStart: 3,
+  gridColumnEnd: 5,
+  gridRowStart: 7,
+  gridRowEnd: 7,
+  display: 'flex',
+  justifyContent: 'left',
+  alignItems: 'center'
+}}>
+
+{/* Button to View all Snippets */}
+<Button 
+sx = {{mr:1}}
+variant="outlined" startIcon={<PageviewIcon/>} onClick ={()=>{
+  console.log(allSnippets)
+  setCurrentlySelectedFolder(allSnippets);
+  showRelevantSnippets();
+  console.log(currentlySelectedFolder)
+
+}}>
+View All
+</Button>
+{/* Button to View all Snippets */}
+<Button variant="outlined" startIcon={<PageviewIcon/>} onClick ={()=>{
+  refetch()
+  setCurrentlySelectedFolder("")
+  showRelevantSnippets();
+  console.log(currentlySelectedFolder)
+
+}}>
+Snips
+</Button>
+
+</Box>
 
 
 
 
-        <Button variant="outlined" startIcon={<PageviewIcon/>} >
-          View All
-        </Button>
 
-      </Box>
+<Box
+sx={{
+  bgcolor: 'white', ml: 1, mr: 1,
+  gridColumnStart: 5,
+  gridColumnEnd: 14,
+  gridRowStart: 7,
+  gridRowEnd: 7,
+  display: 'flex',
+  justifyContent: 'left',
+  alignItems: 'center'
+}}>
 
-      {/* This is the "Snippet Name" field */}
-      <Box
-        sx={{
-          bgcolor: 'white', ml: 1, mr: 1,
-          gridColumnStart: 5,
-          gridColumnEnd: 7,
-          gridRowStart: 7,
-          gridRowEnd: 7
-        }}>
+<Button variant="outlined" onClick ={()=>{
+  setSnipName('')
+  setSnippetBody('')
+  setActiveSnip(null)
+  setFolderDropDown('')
+}}>
+  <AddIcon/>
+</Button>
 
-        <TextField
-          sx={{
-            ml: 1,
-            mr: 1,
-            height: '50%',
-          }}
-          id="standard-basic"
-          label="Snippet Name"
-          name="title"
-          variant="standard"
-          onChange={handleInput}
-          value={snipName} />
-      </Box>
+
+<Button 
+sx={{
+display: 'flex',
+justifyContent: 'space-around',
+alignItems: 'center', m: 1
+}} variant="outlined" onClick={saveSnippet}
+>
+  <SaveIcon />
+</Button>
+
+<Button 
+sx={{
+display: 'flex',
+justifyContent: 'space-around',
+alignItems: 'center', mr: 1
+}} variant="outlined" 
+onClick={deleteSingleSnippet}>
+<DeleteForeverIcon />
+</Button>
+
+
+
+
+<TextField
+sx={{
+  ml: 2,
+ 
+  // height: '50%',
+}}
+id="standard-basic"
+label="Snippet Name"
+name="title"
+variant="standard"
+onChange={handleInput}
+value={snipName} />
+
+<FolderSearch 
+
+
+folderDropDown = {folderDropDown} 
+setFolderDropDown = {setFolderDropDown}
+/>
+
+</Box>
+      
 
 
       {/* This is the dropdown for searching for folders */}
 
-      <Box sx={{
-        bgcolor: 'white', ml: 1, mr: 1,
-        gridColumnStart: 7,
-        gridColumnEnd: 10,
-        gridRowStart: 7,
-        gridRowEnd: 7
-      }}>
-
-        <FolderSearch folderDropDown = {folderDropDown} setFolderDropDown = {setFolderDropDown}/>
-      </Box>
+   
 
       {/* This box contains the save, delete, and color buttons field */}
-      <Box sx={{
+      {/* <Box sx={{
         bgcolor: 'white', ml: 1, mr: 1,
         gridColumnStart: 10,
         gridColumnEnd: 13,
@@ -250,34 +325,20 @@ refetch()
         alignItems: 'center'
       }}>
 
-        <Button sx={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center', m: 1
-        }} variant="outlined" onClick={saveSnippet}
-        >
-          <SaveIcon />
-        </Button>
+        
 
-        <Button sx={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center', mr: 1
-        }} variant="outlined" 
-o         onClick={deleteSingleSnippet} >
-          <DeleteForeverIcon />
-        </Button>
+        
 
-        <ColorDropDown />
+        
 
-      </Box>
+      </Box> */}
 
       {/* This is the container for the snippet folders  */}
       
 
 
 
-<FolderContainer/>
+
 
 
 
@@ -296,7 +357,7 @@ o         onClick={deleteSingleSnippet} >
               gridRowStart: 8,
               gridRowEnd: 24}} variant="filled">
 
-{allSnippets.map((snippet)=> {
+{showRelevantSnippets().map((snippet)=> {
 return (<Button
 sx={{ 
 bgcolor: 'black', 
@@ -336,6 +397,9 @@ setFolderDropDown(snippet.parentFolder)
           id="standard-multiline-static"
           sx={{
             width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'top'
           }}
           multiline
           rows={28}
@@ -343,8 +407,13 @@ setFolderDropDown(snippet.parentFolder)
           value={snippetBody}
           variant="filled"
           onChange={handleInput}
-        />
 
+
+        >
+
+
+
+</TextField>
 
       </Box>
     </>
