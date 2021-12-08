@@ -157,6 +157,8 @@ setSnipName('')
 setSnippetBody('')
 setActiveSnip(null)
 setFolderDropDown("")
+
+refetch()
 showRelevantSnippets(currentlySelectedFolder)
 
 }
@@ -204,8 +206,8 @@ return (
   bgcolor: 'white', ml: 1, mr: 1,
   gridColumnStart: 3,
   gridColumnEnd: 5,
-  gridRowStart: 7,
-  gridRowEnd: 7,
+  gridRowStart: 5,
+  gridRowEnd: 6,
   display: 'flex',
   justifyContent: 'left',
   alignItems: 'center'
@@ -217,7 +219,7 @@ sx = {{mr:1}}
 variant="outlined" startIcon={<PageviewIcon/>} onClick ={()=>{
   console.log(allSnippets)
   setCurrentlySelectedFolder(allSnippets);
-  showRelevantSnippets();
+  // showRelevantSnippets();
   console.log(currentlySelectedFolder)
 
 }}>
@@ -245,8 +247,8 @@ sx={{
   bgcolor: 'white', ml: 1, mr: 1,
   gridColumnStart: 5,
   gridColumnEnd: 14,
-  gridRowStart: 7,
-  gridRowEnd: 7,
+  gridRowStart: 5,
+  gridRowEnd: 5,
   display: 'flex',
   justifyContent: 'left',
   alignItems: 'center'
@@ -307,55 +309,13 @@ setFolderDropDown = {setFolderDropDown}
 
 </Box>
       
-
-
-      {/* This is the dropdown for searching for folders */}
-
-   
-
-      {/* This box contains the save, delete, and color buttons field */}
-      {/* <Box sx={{
-        bgcolor: 'white', ml: 1, mr: 1,
-        gridColumnStart: 10,
-        gridColumnEnd: 13,
-        gridRowStart: 7,
-        gridRowEnd: 7,
-        display: 'flex',
-        justifyContent: 'right',
-        alignItems: 'center'
-      }}>
-
-        
-
-        
-
-        
-
-      </Box> */}
-
-      {/* This is the container for the snippet folders  */}
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       {/* This is the container for the snippets  */}
-      <Box sx={{ bgcolor: 'gray', ml: 1, mr: 1, 
-              gridColumnStart: 3, 
-              gridColumnEnd: 5, 
-              gridRowStart: 8,
-              gridRowEnd: 24}} variant="filled">
+<Box 
+sx={{ bgcolor: 'gray', ml: 1, mr: 1, 
+gridColumnStart: 3, 
+gridColumnEnd: 5, 
+gridRowStart: 6,
+gridRowEnd: 24}} variant="filled">
 
 {showRelevantSnippets().map((snippet)=> {
 return (<Button
@@ -389,7 +349,7 @@ setFolderDropDown(snippet.parentFolder)
         bgcolor: 'white', ml: 1, mr: 1,
         gridColumnStart: 5,
         gridColumnEnd: 13,
-        gridRowStart: 8,
+        gridRowStart: 6,
         gridRowEnd: 20
       }}>
 
@@ -402,7 +362,7 @@ setFolderDropDown(snippet.parentFolder)
             alignItems: 'top'
           }}
           multiline
-          rows={28}
+          rows={31}
           name="body"
           value={snippetBody}
           variant="filled"

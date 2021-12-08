@@ -121,8 +121,8 @@ setFolderName('')
   bgcolor: 'white', ml: 1, mr: 1,
   gridColumnStart: 1,
   gridColumnEnd: 3,
-  gridRowStart: 7,
-  gridRowEnd: 7,
+  gridRowStart: 5,
+  gridRowEnd: 5,
   display: 'flex',
   justifyContent: 'left',
   alignItems: 'center'
@@ -206,7 +206,7 @@ ml: 1,
 mr: 1, 
 gridColumnStart: 1, 
 gridColumnEnd: 3, 
-gridRowStart: 8,
+gridRowStart: 6,
 gridRowEnd: 24}} 
 variant="filled"
 >
